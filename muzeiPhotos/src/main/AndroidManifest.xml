@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xinthink.muzei.photos.worker" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <service
+            android:name="com.xinthink.muzei.photos.PhotosArtSource"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
+            </intent-filter>
+
+            <meta-data
+                android:name="replacement"
+                android:value="${photosAuthority}" />
+        </service>
+
+        <provider
+            android:name="com.xinthink.muzei.photos.PhotosArtProvider"
+            android:authorities="${photosAuthority}"
+            android:description="@string/description"
+            android:exported="true"
+            android:label="@string/name"
+            android:permission="com.google.android.apps.muzei.api.ACCESS_PROVIDER">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtProvider" />
+            </intent-filter>
+        </provider>
+    </application>
+</manifest>

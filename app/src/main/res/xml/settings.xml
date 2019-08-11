@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="keywords"
+        android:title="Keywords for searching photos"
+        />
+
+    <SwitchPreferenceCompat
+        app:key="featured"
+        app:title="Featured photos only"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreferenceCompat
+        app:key="random"
+        app:title="Pick photos randomly"
+        app:defaultValue="true"
+        />
+
+</androidx.preference.PreferenceScreen>
