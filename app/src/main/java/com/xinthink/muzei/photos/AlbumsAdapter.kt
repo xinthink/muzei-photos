@@ -1,15 +1,30 @@
 package com.xinthink.muzei.photos
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import org.jetbrains.anko.UI
+import org.jetbrains.anko.bottomPadding
+import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.BOTTOM
+import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.END
+import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.START
+import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.TOP
+import org.jetbrains.anko.constraint.layout.applyConstraintSet
+import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.imageView
 import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.space
+import org.jetbrains.anko.textColorResource
 import org.jetbrains.anko.textView
 
 /**
@@ -44,6 +59,11 @@ class AlbumsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount() = mAlbums.size + 1
+
+    override fun getItemId(position: Int) = when (position) {
+        0 -> 0
+        else -> mAlbums[position - 1].id.hashCode()
+    }.toLong()
 
     override fun getItemViewType(position: Int) = when (position) {
         0 -> TYPE_ACCOUNT
@@ -100,25 +120,92 @@ private class AccountRenderer(
  */
 private class AlbumRenderer(
     itemView: View,
-    val txtName: TextView
+    val imgCover: ImageView,
+    val txtName: TextView,
+    val txtCount: TextView
 ): RecyclerView.ViewHolder(itemView) {
+    private val context = itemView.context
 
     fun render(album: Album) {
+        val size = context.coverImageSize()
+        Picasso.get()
+            .load("${album.coverPhotoBaseUrl}=w$size-h$size")
+            .resize(size, size)
+            .centerCrop()
+            .transform(RoundedCornersTransformation(itemView.dip(6), 0))
+            .into(imgCover)
         txtName.text = album.title
+        txtCount.text = context.getString(R.string.items_in_album, album.mediaItemsCount)
     }
 
     companion object {
+        private var coverImageSize = 0
+
         /** Instantiate an [AlbumRenderer] */
         fun create(context: Context): AlbumRenderer {
+            lateinit var imgCover: ImageView
             lateinit var txtName: TextView
+            lateinit var txtCount: TextView
             val v = context.UI {
-                linearLayout {
-                    textView("Name:")
-                    space().lparams(width = dip(12))
-                    txtName = textView()
+                constraintLayout {
+                    bottomPadding = dip(8)
+
+                    imgCover = imageView {
+                        id = R.id.img_album_cover
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                        adjustViewBounds = false
+                    }.lparams(matchConstraint, matchConstraint)
+
+                    txtName = textView {
+                        id = R.id.txt_album_title
+                        maxLines = 2
+                        ellipsize = TextUtils.TruncateAt.END
+                        textColorResource = R.color.primary_text_light
+                        textSize = 14f
+                    }.lparams(matchConstraint)
+
+                    txtCount = textView {
+                        id = R.id.txt_album_items
+                        maxLines = 1
+                        ellipsize = TextUtils.TruncateAt.END
+                        textColorResource = R.color.secondary_text_light
+                        textSize = 12f
+                    }.lparams(matchConstraint)
+
+                    applyConstraintSet {
+                        imgCover {
+                            connect(
+                                START to START of PARENT_ID,
+                                END to END of PARENT_ID,
+                                TOP to TOP of PARENT_ID
+                            )
+                            dimensionRation = "1"
+                        }
+                        txtName {
+                            connect(
+                                TOP to BOTTOM of imgCover margin dip(6),
+                                START to START of imgCover,
+                                END to END of imgCover
+                            )
+                        }
+                        txtCount {
+                            connect(
+                                TOP to BOTTOM of txtName margin dip(4),
+                                START to START of imgCover,
+                                END to END of imgCover
+                            )
+                        }
+                    }
                 }
             }.view
-            return AlbumRenderer(v, txtName)
+            return AlbumRenderer(v, imgCover, txtName, txtCount)
         }
+    }
+
+    fun Context.coverImageSize(): Int {
+        if (coverImageSize <= 0) {
+            coverImageSize = resources.displayMetrics.widthPixels / 2
+        }
+        return coverImageSize
     }
 }

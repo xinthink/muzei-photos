@@ -1,5 +1,7 @@
 package com.xinthink.muzei.photos
 
+import android.content.Context
+import com.xinthink.muzei.photos.TokenService.Companion.refreshAccessToken
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -13,6 +15,16 @@ interface PhotosService {
     suspend fun albums(): AlbumsPagination
 
     companion object {
+
+        /** Fetch Photos albums */
+        suspend fun Context.fetchPhotosAlbums(nextPageToken: String? = null): AlbumsPagination {
+            val token = TokenService.tokenInfo
+            if (token.isExpired) {
+                refreshAccessToken(token)
+            }
+            return create().albums()
+        }
+
         private fun authorize(chain: Interceptor.Chain) = chain.proceed(
             chain.request()
                 .newBuilder()

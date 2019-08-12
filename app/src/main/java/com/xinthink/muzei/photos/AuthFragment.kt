@@ -18,12 +18,15 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
-import com.xinthink.muzei.photos.TokenService.Companion.fetchAccessToken
+import com.xinthink.muzei.photos.TokenService.Companion.exchangeAccessToken
 import com.xinthink.muzei.photos.worker.BuildConfig
 import kotlinx.android.synthetic.main.fragment_auth.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.sdk19.listeners.onClick
 import org.jetbrains.anko.toast
 
@@ -54,7 +57,7 @@ class AuthFragment : Fragment(), CoroutineScope by MainScope() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestServerAuthCode(BuildConfig.AUTH_CLIENT_ID)
+            .requestServerAuthCode(BuildConfig.AUTH_CLIENT_ID, true)
             .requestScopes(Scope(BuildConfig.AUTH_SCOPE_PHOTOS))
             .build()
         // Build a GoogleSignInClient with the options specified by gso.
@@ -106,7 +109,7 @@ class AuthFragment : Fragment(), CoroutineScope by MainScope() {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             if (account != null) {
-                refreshToken(account) // Signed in successfully, fetch or refresh the access token
+                exchangeAccessToken(account) // Signed in successfully, fetch access token now
             } else if (resultCode != Activity.RESULT_CANCELED) {
                 context?.toast("Google Sign-In failed")
             }
@@ -122,39 +125,23 @@ class AuthFragment : Fragment(), CoroutineScope by MainScope() {
         }
     }
 
-    /** fetch or refresh the access token */
-    private fun refreshToken(account: GoogleSignInAccount) {
-        try {
-            updateUI(account, isLoading = true)
-            context?.fetchAccessToken(this, account.serverAuthCode ?: "") {
-                navController.popBackStack()
+    /** fetch access token */
+    private fun exchangeAccessToken(account: GoogleSignInAccount) {
+        launch {
+            try {
+                updateUI(account, isLoading = true)
+                context?.exchangeAccessToken(account.serverAuthCode ?: "")
+
+                withContext(Dispatchers.Main) {
+                    Log.d(TAG, "token fetched, return to previous screen")
+                    navController.popBackStack()
+                }
+            } catch (e: Throwable) {
+                context?.toast("Authorization failed: ${e.message}")
+                Log.e(TAG, "fetchAccessToken failed", e)
             }
-        } catch (e: Throwable) {
-            context?.toast("Authorization failed: ${e.message}")
-            Log.e(TAG, "fetchAccessToken failed", e)
         }
     }
-
-    private fun onTest(account: GoogleSignInAccount) {
-        context?.fetchAccessToken(this, account.serverAuthCode ?: "") {
-            Log.d(TAG, "fetching albums...")
-        }
-    }
-
-//        GlobalScope.launch {
-//            context?.fetchAccessToken(account.serverAuthCode ?: "")
-//        }
-//            .flatMap {
-//                Log.d(TAG, "token: $it")
-//                photosService.albums()
-//            }
-//            .subscribeOn(Schedulers.io())
-//            .subscribe({ resp ->
-//                Log.d(TAG, "albums: $resp")
-//            }, { e ->
-//                Log.e(TAG, "fetch albums failed", e)
-//            })
-//    }
 
     companion object {
         private const val TAG = "AUTH"

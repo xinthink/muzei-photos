@@ -27,6 +27,8 @@ object V {
     const val exifInterfaceVersion = "1.0.0"
     const val retrofitVersion = "2.6.1"
     const val okhttpVersion = "3.12.1"
+    const val picassoVersion = "2.71828"
+    const val picassoTransformationsVersion = "2.2.1"
     const val workManagerVersion = "1.0.0"
     const val muzeiApiVersion = "3.1.0"
     const val gmsAuthVersion = "16.0.1"
@@ -70,6 +72,8 @@ val DependencyHandler.retrofit get() = "com.squareup.retrofit2:retrofit:${V.retr
 val DependencyHandler.retrofitMoshi get() = "com.squareup.retrofit2:converter-moshi:${V.retrofitVersion}"
 val DependencyHandler.retrofitRx get() = "com.squareup.retrofit2:adapter-rxjava2:${V.retrofitVersion}"
 val DependencyHandler.okhttp get() = "com.squareup.okhttp3:okhttp:${V.okhttpVersion}"
+val DependencyHandler.picasso get() = "com.squareup.picasso:picasso:${V.picassoVersion}"
+val DependencyHandler.picassoTransformations get() = "jp.wasabeef:picasso-transformations:${V.picassoTransformationsVersion}"
 
 // test dependencies
 val DependencyHandler.junit get() = "junit:junit:${V.junitVersion}"

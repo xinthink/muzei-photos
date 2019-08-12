@@ -46,7 +46,11 @@ dependencies {
     implementation(navigationFragment)
     implementation(material)
     implementation(constraintLayout)
+    implementation(ankoCardView)
     implementation(ankoRecyclerView)
+    implementation(ankoConstraintLayout)
+    implementation(picasso)
+    implementation(picassoTransformations)
 
     // google sign-in & photos authorization
     implementation(gmsAuth)

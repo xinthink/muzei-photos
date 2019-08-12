@@ -13,8 +13,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xinthink.muzei.photos.TokenInfo.Companion.isValid
 import org.jetbrains.anko.UI
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.horizontalPadding
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.toast
 
@@ -27,7 +28,6 @@ class AlbumsFragment : Fragment() {
     private lateinit var albumsAdapter: AlbumsAdapter
 
     private val account get() = viewModel.account
-    private val token get() = viewModel.token
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +35,12 @@ class AlbumsFragment : Fragment() {
         viewModel = ViewModelProvider(this)[AlbumsViewModel::class.java]
         viewModel.albums.observe(this, onAlbumsResult)
 
-        viewModel.loadAuthorization(context)
-        if (account == null) navController.navigate(R.id.action_auth) // sign-in first
+        if (viewModel.isUnauthorized(context)) navController.navigate(R.id.action_auth) // sign-in first
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "--- MainFragment started")
+        Log.d(TAG, "AlbumsFragment started, check authorization again")
         viewModel.loadAuthorization(context)
         render()
         renderAlbums()
@@ -53,6 +52,7 @@ class AlbumsFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = context?.UI {
         recyclerView {
+            horizontalPadding = dip(7)
             initRecyclerView(this)
         }
     }?.view
@@ -74,7 +74,11 @@ class AlbumsFragment : Fragment() {
                 parent: RecyclerView,
                 state: RecyclerView.State
             ) {
-                outRect.set(4, 4, 4, 4)
+                val dip: (Int) -> Int = view::dip
+                val count = albumsAdapter.itemCount - 1
+                val position = parent.getChildAdapterPosition(view)
+                val atBottom = position >= count - 2
+                outRect.set(dip(7), dip(7), dip(7), if (atBottom) dip(28) else dip(14))
             }
         })
         rv.adapter = albumsAdapter
@@ -83,25 +87,20 @@ class AlbumsFragment : Fragment() {
     private fun render() {
         val account = this.account ?: return renderSignedOut()
 
-        // if signed-in, show account info no matter the token is valid or not
-//        txtName.text = account.displayName
+        // if signed-in, show account summary
         albumsAdapter.account = account
 
         // TODO different content if token is invalid or expired
-//        txtAuthCode.text = token?.authCode
-//        txtToken.text = token?.authCode
     }
 
     private fun renderSignedOut() {
         albumsAdapter.account = null
-//        txtName.text = null
-//        txtAuthCode.text = null
-//        txtToken.text = null
     }
 
     private fun renderAlbums() {
-        if (token.isValid) viewModel.fetchAlbums()
-        else albumsAdapter.clearAlbums()
+        val ctx = context
+        if (ctx == null || viewModel.isUnauthorized(ctx)) albumsAdapter.clearAlbums()
+        else viewModel.fetchAlbums(ctx)
     }
 
     private val onAlbumsResult = Observer<AlbumsResult?> {
@@ -113,6 +112,6 @@ class AlbumsFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "MAIN"
+        const val TAG = "ALBUMS"
     }
 }

@@ -16,13 +16,25 @@ data class TokenInfo(
     @field:Json(name = "token_type")
     val tokenType: String = "",
 
-    // for local storage only
-    val authCode: String = ""
+    /** Timestamp when the access token expires, a derived property */
+    private var mExpiresAt: Long = 0
 ) {
+    /** Whether the token is expired (at least 10 seconds until it expires) */
+    val isExpired: Boolean get() = accessToken.isEmpty() || refreshToken.isEmpty() ||
+        (expiresAt - System.currentTimeMillis()) < 10000L
+
+    /** Timestamp when the access token expires */
+    val expiresAt: Long get() = mExpiresAt
+
+    /** Compute and update [expiresAt] */
+    fun computeExpiresAt() {
+        mExpiresAt = System.currentTimeMillis() + expiresIn * 1000L
+    }
+
     companion object {
-        /** Whether this token is valid (is authorized) TODO check refresh_token & expires_in */
-        val TokenInfo?.isValid: Boolean get() =
-            this != null && authCode.isNotEmpty() && accessToken.isNotEmpty()
+        /** Whether the access token is valid (is authorized) */
+        val TokenInfo?.isValid: Boolean
+            get() = this != null && accessToken.isNotEmpty() && refreshToken.isNotEmpty()
     }
 }
 
