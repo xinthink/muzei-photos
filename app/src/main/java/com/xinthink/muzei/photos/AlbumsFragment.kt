@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.UI
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.horizontalPadding
+import org.jetbrains.anko.horizontalProgressBar
+import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.verticalLayout
 
 /**
  * Main screen of the app, displaying albums in the Photos account
@@ -26,6 +29,7 @@ class AlbumsFragment : Fragment() {
     private lateinit var viewModel: AlbumsViewModel
     private lateinit var navController: NavController
     private lateinit var albumsAdapter: AlbumsAdapter
+    private lateinit var loadingIndicator: View
 
     private val account get() = viewModel.account
 
@@ -33,7 +37,7 @@ class AlbumsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         navController = NavHostFragment.findNavController(this)
         viewModel = ViewModelProvider(this)[AlbumsViewModel::class.java]
-        viewModel.albums.observe(this, onAlbumsResult)
+        observeViewModel()
 
         if (viewModel.isUnauthorized(context)) navController.navigate(R.id.action_auth) // sign-in first
     }
@@ -51,9 +55,19 @@ class AlbumsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = context?.UI {
-        recyclerView {
-            horizontalPadding = dip(7)
-            initRecyclerView(this)
+        verticalLayout {
+            loadingIndicator = horizontalProgressBar {
+                isIndeterminate = true
+                visibility = View.GONE
+            }.lparams(matchParent) {
+                topMargin = dip(-7)
+            }
+            recyclerView {
+                horizontalPadding = dip(7)
+                initRecyclerView(this)
+            }.lparams(matchParent, matchParent) {
+                topMargin = dip(-7)
+            }
         }
     }?.view
 
@@ -101,6 +115,13 @@ class AlbumsFragment : Fragment() {
         val ctx = context
         if (ctx == null || viewModel.isUnauthorized(ctx)) albumsAdapter.clearAlbums()
         else viewModel.fetchAlbums(ctx)
+    }
+
+    private fun observeViewModel() {
+        viewModel.isLoading.observe(this, Observer {
+            loadingIndicator.visibility = if (it == true) View.VISIBLE else View.GONE
+        })
+        viewModel.albums.observe(this, onAlbumsResult)
     }
 
     private val onAlbumsResult = Observer<AlbumsResult?> {

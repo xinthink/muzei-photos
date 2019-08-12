@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=CFD8DC-->
+<!--<resources>-->
+    <!--<color name="colorPrimary">#008577</color>-->
+    <!--<color name="colorPrimaryDark">#00574B</color>-->
+    <!--<color name="colorAccent">#D81B60</color>-->
+    <!--<color name="primary_text_light">#de000000</color>-->
+    <!--<color name="secondary_text_light">#ac000000</color>-->
+<!--</resources>-->
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="primary_text_light">#de000000</color>
-    <color name="secondary_text_light">#ac000000</color>
+    <color name="primaryColor">#cfd8dc</color>
+    <color name="accentColor">#9da6a9</color>
+    <color name="primaryLightColor">#ffffff</color>
+    <color name="primaryDarkColor">#9ea7aa</color>
+    <color name="primaryTextColor">#000000</color>
 </resources>

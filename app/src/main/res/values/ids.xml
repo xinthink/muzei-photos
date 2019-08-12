@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="nav_host_fragment" type="id" />
+    <item name="img_avatar" type="id" />
     <item name="img_album_cover" type="id" />
     <item name="txt_album_title" type="id" />
     <item name="txt_album_items" type="id" />

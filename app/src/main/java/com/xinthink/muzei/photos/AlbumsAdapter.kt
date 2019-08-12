@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import org.jetbrains.anko.UI
 import org.jetbrains.anko.bottomPadding
@@ -21,11 +22,11 @@ import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.horizontalPadding
 import org.jetbrains.anko.imageView
-import org.jetbrains.anko.linearLayout
-import org.jetbrains.anko.space
 import org.jetbrains.anko.textColorResource
 import org.jetbrains.anko.textView
+import org.jetbrains.anko.topPadding
 
 /**
  * Adapter for albums list
@@ -92,25 +93,52 @@ class AlbumsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
  */
 private class AccountRenderer(
     itemView: View,
-    val txtName: TextView
+    val imgAvatar: ImageView
 ): RecyclerView.ViewHolder(itemView) {
 
     fun render(account: GoogleSignInAccount?) {
-        txtName.text = account?.displayName
+        if (account == null) return
+
+        val size = itemView.dip(avatarSize)
+        Picasso.get()
+            .load("${account.photoUrl}")
+            .resize(size, size)
+            .centerCrop()
+            .transform(CropCircleTransformation())
+            .into(imgAvatar)
     }
 
     companion object {
+        private const val avatarSize = 48
+
         /** Instantiate an [AccountRenderer] */
         fun create(context: Context): AccountRenderer {
-            lateinit var txtName: TextView
+            lateinit var imgAvatar: ImageView
             val v = context.UI {
-                linearLayout {
-                    textView("Name:")
-                    space().lparams(width = dip(12))
-                    txtName = textView()
+                constraintLayout {
+                    topPadding = dip(24)
+                    bottomPadding = dip(12)
+                    horizontalPadding = dip(20)
+
+                    imgAvatar = imageView {
+                        id = R.id.img_avatar
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                        adjustViewBounds = false
+                    }.lparams(dip(avatarSize), dip(avatarSize))
+
+                    applyConstraintSet {
+                        imgAvatar {
+                            connect(
+                                START to START of PARENT_ID,
+                                END to END of PARENT_ID,
+                                TOP to TOP of PARENT_ID,
+                                BOTTOM to BOTTOM of PARENT_ID
+                            )
+                        }
+                    }
                 }
             }.view
-            return AccountRenderer(v, txtName)
+            return AccountRenderer(v, imgAvatar)
         }
     }
 }
@@ -160,7 +188,7 @@ private class AlbumRenderer(
                         id = R.id.txt_album_title
                         maxLines = 2
                         ellipsize = TextUtils.TruncateAt.END
-                        textColorResource = R.color.primary_text_light
+                        textColorResource = R.color.primaryTextColor
                         textSize = 14f
                     }.lparams(matchConstraint)
 
@@ -168,7 +196,7 @@ private class AlbumRenderer(
                         id = R.id.txt_album_items
                         maxLines = 1
                         ellipsize = TextUtils.TruncateAt.END
-                        textColorResource = R.color.secondary_text_light
+                        textColorResource = R.color.primaryTextColor
                         textSize = 12f
                     }.lparams(matchConstraint)
 

@@ -22,6 +22,9 @@ class AlbumsViewModel: ViewModel() {
     private val mAlbums = MutableLiveData<AlbumsResult>()
     val albums: LiveData<AlbumsResult> get() = mAlbums
 
+    private val mLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> get() = mLoading
+
     @Volatile
     private var albumsPageToken: String? = null
 
@@ -42,6 +45,7 @@ class AlbumsViewModel: ViewModel() {
     /** Fetch Photos albums */
     fun fetchAlbums(context: Context, isIncremental: Boolean = false) {
         if (!isIncremental) albumsPageToken = null // clear pagination when refreshing
+        mLoading.postValue(true)
         viewModelScope.launch {
             try {
                 val pagination = context.fetchPhotosAlbums(albumsPageToken)
@@ -49,6 +53,8 @@ class AlbumsViewModel: ViewModel() {
                 mAlbums.postValue(pagination)
             } catch (e: Throwable) {
                 mAlbums.postValue(AlbumsFailure(e))
+            } finally {
+                mLoading.postValue(false)
             }
         }
     }
