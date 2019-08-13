@@ -3,6 +3,9 @@
     <item name="nav_host_fragment" type="id" />
     <item name="img_avatar" type="id" />
     <item name="img_album_cover" type="id" />
+    <item name="album_cover_holder" type="id" />
+    <item name="album_cover_bg" type="id" />
+    <item name="ic_check" type="id" />
     <item name="txt_album_title" type="id" />
     <item name="txt_album_items" type="id" />
 </resources>

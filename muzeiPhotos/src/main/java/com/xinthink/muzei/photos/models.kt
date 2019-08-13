@@ -47,8 +47,16 @@ data class Album(
 
     val coverPhotoBaseUrl: String,
     val coverPhotoMediaItemId: String,
-    val mediaItemsCount: Int
-)
+    val mediaItemsCount: Int,
+
+    /** Whether the album is selected, for local use only */
+    var isSelected: Boolean = false
+) {
+    fun setSelected(id: String?): Album {
+        isSelected = this.id == id
+        return this
+    }
+}
 
 sealed class AlbumsResult
 

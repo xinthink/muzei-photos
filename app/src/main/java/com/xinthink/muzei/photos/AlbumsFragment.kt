@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.UI
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.horizontalPadding
 import org.jetbrains.anko.horizontalProgressBar
@@ -58,7 +60,7 @@ class AlbumsFragment : Fragment() {
         verticalLayout {
             loadingIndicator = horizontalProgressBar {
                 isIndeterminate = true
-                visibility = View.GONE
+                visibleKeepSpace = false
             }.lparams(matchParent) {
                 topMargin = dip(-7)
             }
@@ -72,7 +74,7 @@ class AlbumsFragment : Fragment() {
     }?.view
 
     private fun initRecyclerView(rv: RecyclerView) {
-        albumsAdapter = AlbumsAdapter()
+        albumsAdapter = AlbumsAdapter(loadSelectedAlbumId(), ::onAlbumSelected)
         rv.layoutManager = GridLayoutManager(context, 2).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int) = when (position) {
@@ -119,7 +121,7 @@ class AlbumsFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(this, Observer {
-            loadingIndicator.visibility = if (it == true) View.VISIBLE else View.GONE
+            loadingIndicator.visibleKeepSpace = it == true
         })
         viewModel.albums.observe(this, onAlbumsResult)
     }
@@ -131,6 +133,16 @@ class AlbumsFragment : Fragment() {
             else -> Unit
         }
     }
+
+    /** Handle album selection change */
+    private fun onAlbumSelected(album: Album) {
+        context?.defaultSharedPreferences?.edit {
+            putString("selected_album_id", album.id)
+        }
+    }
+
+    private fun loadSelectedAlbumId(): String?
+        = context?.defaultSharedPreferences?.getString("selected_album_id", null)
 
     companion object {
         const val TAG = "ALBUMS"
