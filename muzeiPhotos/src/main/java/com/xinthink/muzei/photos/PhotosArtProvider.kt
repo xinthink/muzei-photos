@@ -16,84 +16,41 @@
 
 package com.xinthink.muzei.photos
 
-import android.content.Intent
-import android.util.Log
-import androidx.core.net.toUri
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import com.xinthink.muzei.photos.worker.R
-import com.xinthink.muzei.photos.worker.UnsplashService
-import java.io.IOException
-import java.io.InputStream
 
 class PhotosArtProvider : MuzeiArtProvider() {
 
     companion object {
         private const val TAG = "MuzeiPhotos"
 
-        private const val COMMAND_ID_VIEW_PROFILE = 1
-        private const val COMMAND_ID_VISIT_UNSPLASH = 2
-        private const val COMMAND_ID_SETTINGS = 3
-        private const val COMMAND_ID_PRUNE = 4
+        private const val COMMAND_ID_SETTINGS = 1
+        private const val COMMAND_ID_PRUNE = 2
     }
 
     override fun onLoadRequested(initial: Boolean) {
-//        PhotosWorker.enqueueLoad()
+        PhotosWorker.enqueueLoad(initial)
     }
 
     override fun getCommands(artwork: Artwork) = context?.run {
-        listOf(
+        listOfNotNull(
             UserCommand(
-                COMMAND_ID_VIEW_PROFILE,
-                getString(R.string.action_view_profile, artwork.byline)
+                COMMAND_ID_SETTINGS,
+                getString(R.string.menu_settings)
             ),
-            UserCommand(
-                COMMAND_ID_VISIT_UNSPLASH,
-                getString(R.string.action_visit_unsplash)
-            ),
-//            UserCommand(
-//                COMMAND_ID_SETTINGS,
-//                getString(R.string.menu_unsplash_settings)
-//            ),
             UserCommand(
                 COMMAND_ID_PRUNE,
-                "Prune"
+                getString(R.string.menu_prune)
             )
         )
-    } ?: super.getCommands(artwork)
+    } ?: emptyList()
 
     override fun onCommand(artwork: Artwork, id: Int) {
-        val context = context ?: return
         when (id) {
-            COMMAND_ID_VIEW_PROFILE -> {
-                val profileUri = artwork.metadata?.toUri() ?: return
-                context.startActivity(Intent(Intent.ACTION_VIEW, profileUri))
-            }
-            COMMAND_ID_VISIT_UNSPLASH -> {
-                val unsplashUri = context.getString(R.string.unsplash_link) +
-                        "ATTRIBUTION_QUERY_PARAMETERS"
-                context.startActivity(Intent(Intent.ACTION_VIEW, unsplashUri.toUri()))
-            }
-//            COMMAND_ID_SETTINGS -> {
-//                context.startActivity<SettingsActivity>()
-//            }
-            COMMAND_ID_PRUNE -> {
-                // clean existed artworks
-                setArtwork(emptyList())
-            }
-        }
-    }
-
-    override fun openFile(artwork: Artwork): InputStream {
-        return super.openFile(artwork).also {
-            artwork.token?.run {
-                try {
-                    UnsplashService.trackDownload(this)
-                } catch (e: IOException) {
-                    Log.w(TAG, "Error reporting download to Unsplash", e)
-                }
-            }
+            COMMAND_ID_SETTINGS -> Unit
+            COMMAND_ID_PRUNE -> setArtwork(emptyList()) // clean existed artworks
         }
     }
 }

@@ -26,6 +26,42 @@ import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.imageResource
 
+var View.visible: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) { visibility = if (value) View.VISIBLE else View.GONE }
+
+var View.visibleKeepSpace: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) { visibility = if (value) View.VISIBLE else View.INVISIBLE }
+
+fun RecyclerView.ViewHolder.dip(value: Int): Int = itemView.dip(value)
+fun RecyclerView.ViewHolder.dip(value: Float): Int = itemView.dip(value)
+
+fun Context.integer(@IntegerRes resId: Int) = resources.getInteger(resId)
+fun View.integer(@IntegerRes resId: Int) = resources.getInteger(resId)
+fun RecyclerView.ViewHolder.integer(@IntegerRes resId: Int) = itemView.resources.getInteger(resId)
+fun Context.long(@IntegerRes resId: Int) = integer(resId).toLong()
+fun View.long(@IntegerRes resId: Int) = integer(resId).toLong()
+fun RecyclerView.ViewHolder.long(@IntegerRes resId: Int) = integer(resId).toLong()
+
+@ColorInt fun Context.color(@ColorRes resId: Int) = ResourcesCompat.getColor(resources, resId, theme)
+@ColorInt fun View.color(@ColorRes resId: Int) = ResourcesCompat.getColor(resources, resId, context.theme)
+@ColorInt fun View.color(strColor: String) = Color.parseColor(strColor)
+fun View.colorStateList(@ColorRes resId: Int): ColorStateList = ColorStateList.valueOf(color(resId))
+
+fun TextView.ellipsizeEnd() { ellipsize = TextUtils.TruncateAt.END }
+
+/** Compatible way to tint an [ImageView] */
+fun ImageView.setTintCompat(
+    @ColorRes colorRes: Int,
+    @ColorInt color: Int = 0
+) {
+    val colorVal = if (colorRes != 0) this.color(colorRes) else color
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        imageTintList = ColorStateList.valueOf(colorVal)
+    else setColorFilter(colorVal)
+}
+
 fun View.anim(@AnimRes animRes: Int): Animation {
     val anim = AnimationUtils.loadAnimation(context, animRes)
     startAnimation(anim)
@@ -70,42 +106,6 @@ inline fun Animator.doOnStart(crossinline action: (animator: Animator) -> Unit):
 inline fun Animator.doOnEnd(crossinline action: (animator: Animator) -> Unit): Animator {
     addListener(onEnd = action)
     return this
-}
-
-var View.visible: Boolean
-    get() = visibility == View.VISIBLE
-    set(value) { visibility = if (value) View.VISIBLE else View.GONE }
-
-var View.visibleKeepSpace: Boolean
-    get() = visibility == View.VISIBLE
-    set(value) { visibility = if (value) View.VISIBLE else View.INVISIBLE }
-
-fun RecyclerView.ViewHolder.dip(value: Int): Int = itemView.dip(value)
-fun RecyclerView.ViewHolder.dip(value: Float): Int = itemView.dip(value)
-
-fun Context.integer(@IntegerRes resId: Int) = resources.getInteger(resId)
-fun View.integer(@IntegerRes resId: Int) = resources.getInteger(resId)
-fun RecyclerView.ViewHolder.integer(@IntegerRes resId: Int) = itemView.resources.getInteger(resId)
-fun Context.long(@IntegerRes resId: Int) = integer(resId).toLong()
-fun View.long(@IntegerRes resId: Int) = integer(resId).toLong()
-fun RecyclerView.ViewHolder.long(@IntegerRes resId: Int) = integer(resId).toLong()
-
-@ColorInt fun Context.color(@ColorRes resId: Int) = ResourcesCompat.getColor(resources, resId, theme)
-@ColorInt fun View.color(@ColorRes resId: Int) = ResourcesCompat.getColor(resources, resId, context.theme)
-@ColorInt fun View.color(strColor: String) = Color.parseColor(strColor)
-fun View.colorStateList(@ColorRes resId: Int): ColorStateList = ColorStateList.valueOf(color(resId))
-
-fun TextView.ellipsizeEnd() { ellipsize = TextUtils.TruncateAt.END }
-
-/** Compatible way to tint an [ImageView] */
-fun ImageView.setTintCompat(
-    @ColorRes colorRes: Int,
-    @ColorInt color: Int = 0
-) {
-    val colorVal = if (colorRes != 0) this.color(colorRes) else color
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        imageTintList = ColorStateList.valueOf(colorVal)
-    else setColorFilter(colorVal)
 }
 
 /** Factory method to build [AppCompatImageView], so that we can use vector drawables */

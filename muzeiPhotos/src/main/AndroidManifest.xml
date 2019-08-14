@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xinthink.muzei.photos.worker" >
+    package="com.xinthink.muzei.photos.worker">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -26,6 +26,16 @@
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtProvider" />
             </intent-filter>
+
+            <meta-data
+                android:name="color"
+                android:value="#cfd8dc" />
+            <meta-data
+                android:name="setupActivity"
+                android:value="com.xinthink.muzei.photos.LauncherActivity" />
+            <meta-data
+                android:name="settingsActivity"
+                android:value="com.xinthink.muzei.photos.LauncherActivity" />
         </provider>
     </application>
 </manifest>

@@ -366,9 +366,7 @@ private class AlbumRenderer(
     }
 
     fun Context.coverImageSize(): Int {
-        if (coverImageSize <= 0) {
-            coverImageSize = resources.displayMetrics.widthPixels / 2
-        }
+        if (coverImageSize <= 0) coverImageSize = screenWidth / 2
         return coverImageSize
     }
 }

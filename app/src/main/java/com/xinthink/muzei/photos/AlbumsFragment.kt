@@ -1,5 +1,6 @@
 package com.xinthink.muzei.photos
 
+import android.app.Activity
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -138,7 +139,12 @@ class AlbumsFragment : Fragment() {
     private fun onAlbumSelected(album: Album) {
         context?.defaultSharedPreferences?.edit {
             putString("selected_album_id", album.id)
+            putString("selected_album_title", album.title)
         }
+        context?.pageTokenPrefs?.edit {
+            putString("photos_page_token_${album.id}", null)
+        }
+        activity?.setResult(Activity.RESULT_OK)
     }
 
     private fun loadSelectedAlbumId(): String?
