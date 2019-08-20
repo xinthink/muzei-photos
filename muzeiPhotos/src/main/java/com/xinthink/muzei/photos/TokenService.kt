@@ -91,10 +91,11 @@ interface TokenService {
          *
          * @see <a href="https://developers.google.com/identity/protocols/OAuth2InstalledApp#exchange-authorization-code">Step 5: Exchange authorization code for refresh and access tokens</a>
          */
-        suspend fun Context.exchangeAccessToken(serverAuthCode: String) {
+        suspend fun Context.exchangeAccessToken(serverAuthCode: String): TokenInfo {
             val token = create().exchangeAccessToken(serverAuthCode)
             saveToken(token)
             Log.d(TAG, "save exchanged token=$token now=${System.currentTimeMillis()}")
+            return token
         }
 
         /**

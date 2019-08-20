@@ -44,14 +44,14 @@ data class TokenInfo(
 
 data class Album(
     val id: String,
-    val title: String,
+    val title: String = "",
 
     /** The url points to the album in Google Photos that can be a opened by the user. */
-    val productUrl: String,
+    val productUrl: String = "",
 
-    val coverPhotoBaseUrl: String,
-    val coverPhotoMediaItemId: String,
-    val mediaItemsCount: Int,
+    val coverPhotoBaseUrl: String = "",
+    val coverPhotoMediaItemId: String = "",
+    val mediaItemsCount: Int = -1,
 
     /** Whether the album is selected, for local use only */
     var isSelected: Boolean = false
@@ -60,6 +60,9 @@ data class Album(
         isSelected = this.id == id
         return this
     }
+
+    fun isSummaryUpdated(a: Album): Boolean = title != a.title ||
+        coverPhotoBaseUrl != a.coverPhotoBaseUrl || mediaItemsCount != a.mediaItemsCount
 }
 
 sealed class AlbumsResult

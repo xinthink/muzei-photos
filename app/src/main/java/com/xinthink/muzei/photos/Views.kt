@@ -53,7 +53,7 @@ fun TextView.ellipsizeEnd() { ellipsize = TextUtils.TruncateAt.END }
 
 /** Compatible way to tint an [ImageView] */
 fun ImageView.setTintCompat(
-    @ColorRes colorRes: Int,
+    @ColorRes colorRes: Int = 0,
     @ColorInt color: Int = 0
 ) {
     val colorVal = if (colorRes != 0) this.color(colorRes) else color

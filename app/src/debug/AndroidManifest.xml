@@ -4,7 +4,7 @@
     package="com.xinthink.muzei.photos">
 
     <application tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".LauncherActivity">
+        <activity android:name=".AlbumsActivity">
             <!-- add launcher icon for debugging -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

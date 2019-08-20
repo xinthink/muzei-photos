@@ -7,4 +7,11 @@
     <color name="primaryDarkColor">#9ea7aa</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#b0000000</color>
+    <color name="hintTextColor">#80000000</color>
+    <color name="accentColor_white50">#cfd4d5</color>
+    <color name="accentColor_50">#809da6a9</color>
+    <color name="highlight_blue">#3388ff</color>
+    <color name="golden">#ffcc66</color>
+    <color name="mask_black_30">#4c000000</color>
+    <color name="sys_icon_color">#656368</color>
 </resources>

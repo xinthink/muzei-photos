@@ -32,10 +32,10 @@
                 android:value="#cfd8dc" />
             <meta-data
                 android:name="setupActivity"
-                android:value="com.xinthink.muzei.photos.LauncherActivity" />
+                android:value="com.xinthink.muzei.photos.AlbumsActivity" />
             <meta-data
                 android:name="settingsActivity"
-                android:value="com.xinthink.muzei.photos.LauncherActivity" />
+                android:value="com.xinthink.muzei.photos.AlbumsActivity" />
         </provider>
     </application>
 </manifest>

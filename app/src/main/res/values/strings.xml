@@ -3,4 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_settings">Settings</string>
     <string name="items_in_album">%d items</string>
+    <string name="header_currently_set">Currently set</string>
+    <string name="btn_authorize">Authorize</string>
+    <string name="msg_authorization_request">In order to use photos as wallpapers, please authorize the app to access your albums</string>
+    <string name="msg_loading_album">Loading albums, just a second…</string>
+    <string name="msg_pick_one_album">One last step, pick one of the albums below as the wallpaper source.</string>
 </resources>

@@ -41,7 +41,7 @@ class PhotosWorker(
 ) : Worker(context, workerParams) {
 
     companion object {
-        private const val TAG = "MuzeiPhotos"
+        private const val TAG = "MZPWorker"
 
         fun enqueueLoad(initial: Boolean) {
             Log.d(TAG, "enqueueLoad initial=$initial")

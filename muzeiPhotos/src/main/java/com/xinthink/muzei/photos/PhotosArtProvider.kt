@@ -27,7 +27,7 @@ import com.xinthink.muzei.photos.worker.R
 class PhotosArtProvider : MuzeiArtProvider() {
 
     companion object {
-        private const val TAG = "MuzeiPhotos"
+        private const val TAG = "MZPProvider"
 
         private const val COMMAND_ID_SETTINGS = 1
         private const val COMMAND_ID_PRUNE = 2
