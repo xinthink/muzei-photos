@@ -76,7 +76,7 @@ class PhotosWorker(
             }
         } catch (e: IOException) {
             Log.e(TAG, "Error reading Photos response", e)
-            return Result.retry()
+            return Result.failure()
         }
 
         if (pagination.mediaItems.isEmpty()) {
@@ -93,14 +93,14 @@ class PhotosWorker(
             .map {
                 Log.d(TAG, "adding MediaItem: $it")
                 // TODO to fit the screen dimension
-                val w = it.mediaMetadata.width
-                val h = it.mediaMetadata.height
+                val w = it.mediaMetadata?.width
+                val h = it.mediaMetadata?.height
                 Artwork().apply {
                     token = it.id
-                    attribution = it.mediaMetadata.formattedCreationTime()
+                    attribution = it.mediaMetadata?.formattedCreationTime()
                     title = if (it.description?.isNotEmpty() == true) it.description else defaultDesc
                     byline = it.contributorInfo?.displayName
-                    persistentUri = "${it.baseUrl}=w$w-h$h".toUri()
+                    persistentUri = (if (w != null && h != null) "${it.baseUrl}=w$w-h$h" else it.baseUrl).toUri()
                     webUri = it.productUrl.toUri()
                 }
             })

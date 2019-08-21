@@ -109,7 +109,7 @@ data class MediaItem(
     val mimeType: String,
 
     /** Metadata related to the media item, such as, height, width, or creation time. */
-    val mediaMetadata: MediaMetadata,
+    val mediaMetadata: MediaMetadata?,
 
     /** Information about the user who created this media item. */
     val contributorInfo: Contributor?,
