@@ -56,7 +56,7 @@ class AlbumsViewModel: ViewModel() {
     fun loadAuthorization(context: Context?) {
         mAccount.value = GoogleSignIn.getLastSignedInAccount(context)
         mToken.value = context?.loadToken()
-        Log.d(TAG, "restored token from storage: $mToken")
+        if (BuildConfig.DEBUG) Log.d(TAG, "restored token from storage: $mToken")
         context?.loadToken()
     }
 
@@ -114,7 +114,7 @@ class AlbumsViewModel: ViewModel() {
             try {
                 val tokenInfo = exchangeAccessToken(account.serverAuthCode ?: "")
                 mToken.postValue(tokenInfo)
-                Log.d(TAG, "token fetched: $tokenInfo")
+                if (BuildConfig.DEBUG) Log.d(TAG, "token fetched: $tokenInfo")
             } catch (e: Throwable) {
                 toast("Authorization failed: ${e.message}")
                 Log.e(TAG, "fetchAccessToken failed", e)

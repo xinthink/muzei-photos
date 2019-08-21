@@ -94,7 +94,7 @@ interface TokenService {
         suspend fun Context.exchangeAccessToken(serverAuthCode: String): TokenInfo {
             val token = create().exchangeAccessToken(serverAuthCode)
             saveToken(token)
-            Log.d(TAG, "save exchanged token=$token now=${System.currentTimeMillis()}")
+            if (BuildConfig.DEBUG) Log.d(TAG, "save exchanged token=$token now=${System.currentTimeMillis()}")
             return token
         }
 
@@ -110,7 +110,7 @@ interface TokenService {
                 expiresIn = token.expiresIn
             )
             saveToken(token)
-            Log.d(TAG, "save refreshed token=$token now=${System.currentTimeMillis()}")
+            if (BuildConfig.DEBUG) Log.d(TAG, "save refreshed token=$token now=${System.currentTimeMillis()}")
         }
     }
 }

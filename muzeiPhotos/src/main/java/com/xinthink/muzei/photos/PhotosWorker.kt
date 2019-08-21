@@ -44,7 +44,7 @@ class PhotosWorker(
         private const val TAG = "MZPWorker"
 
         fun enqueueLoad(initial: Boolean) {
-            Log.d(TAG, "enqueueLoad initial=$initial")
+            if (BuildConfig.DEBUG) Log.d(TAG, "enqueueLoad initial=$initial")
             val workManager = WorkManager.getInstance()
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<PhotosWorker>()
@@ -66,7 +66,7 @@ class PhotosWorker(
         val isInitial = inputData.getBoolean("initial", false)
         val pageToken = if (isInitial) null else loadPageToken(albumId)
         val pagination = try {
-            Log.d(TAG, "fetching mediaItems album=$albumId, pageToken=$pageToken")
+            if (BuildConfig.DEBUG) Log.d(TAG, "fetching mediaItems album=$albumId, pageToken=$pageToken")
             applicationContext.albumPhotos(
                 albumId = albumId,
                 pageSize = 3,
@@ -91,7 +91,7 @@ class PhotosWorker(
         providerClient.addArtwork(pagination.mediaItems
             .filter { it.mimeType.startsWith("image") }
             .map {
-                Log.d(TAG, "adding MediaItem: $it")
+                if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $it")
                 // TODO to fit the screen dimension
                 val w = it.mediaMetadata?.width
                 val h = it.mediaMetadata?.height

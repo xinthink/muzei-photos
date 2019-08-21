@@ -113,7 +113,7 @@ class AlbumsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        Log.d(TAG, "onBindViewHolder position=$position payloads=$payloads")
+        if (BuildConfig.DEBUG) Log.d(TAG, "onBindViewHolder position=$position payloads=$payloads")
         super.onBindViewHolder(holder, position, payloads)
     }
 
