@@ -19,10 +19,27 @@ android {
             useSupportLibrary = true
         }
     }
+    signingConfigs {
+        val keyFile = rootProject.findProperty("keystore.props.file") as String?
+        if (!keyFile.isNullOrEmpty()) {
+            loadProperties(keyFile)
+            val store = findProperty("store")
+            if (store != null && file(store).exists()) {
+                println("keystore for release builds: $store")
+                register("release") {
+                    storeFile = file(store)
+                    keyAlias = findProperty("alias") as String?
+                    storePassword = findProperty("storePass") as String?
+                    keyPassword = findProperty("pass") as String?
+                }
+            }
+        }
+    }
     buildTypes {
-        getByName("release") {
+        named("release") {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.findByName("release")
         }
     }
     compileOptions {
@@ -46,7 +63,6 @@ dependencies {
     implementation(viewModelKtx)
     implementation(appCompat)
     implementation(preference)
-    implementation(navigationFragment)
     implementation(material)
     implementation(constraintLayout)
     implementation(ankoCardView)

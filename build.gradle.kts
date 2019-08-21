@@ -13,6 +13,8 @@ buildscript {
     }
 }
 
+loadProperties("local.properties")
+
 allprojects {
     repositories {
         google()
