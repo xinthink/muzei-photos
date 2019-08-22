@@ -39,10 +39,10 @@ class PhotosArtProvider : MuzeiArtProvider() {
 
     override fun getCommands(artwork: Artwork) = context?.run {
         listOfNotNull(
-            UserCommand(
-                COMMAND_ID_SETTINGS,
-                getString(R.string.menu_settings)
-            ),
+            // UserCommand(
+            //     COMMAND_ID_SETTINGS,
+            //     getString(R.string.menu_settings)
+            // ),
             UserCommand(
                 COMMAND_ID_PRUNE,
                 getString(R.string.menu_prune)
