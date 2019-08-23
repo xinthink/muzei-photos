@@ -8,7 +8,7 @@ This's a plugin for [Muzei], which is an Android live wallpaper app. This plugin
 [![Get it on Google Play][play-badge]][play-link]
 
 
-[ci-badge]: https://api.cirrus-ci.com/github/xinthink/muzei-photos.svg
+[ci-badge]: https://api.cirrus-ci.com/github/xinthink/muzei-photos.svg?branch=master
 [ci-link]: https://cirrus-ci.com/github/xinthink/muzei-photos
 [license-badge]: https://img.shields.io/dub/l/vibe-d.svg
 [license]: https://raw.githubusercontent.com/xinthink/muzei-photos/master/LICENSE
