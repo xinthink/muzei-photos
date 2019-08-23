@@ -1,0 +1,61 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+ruby_version "2.0.0" # Ruby 2.0+ required for keyword arguments
+
+default_platform(:android)
+
+# Upload the artifact (default: .aab) to Google Play
+def upload_artifact(isAab: true, track: "internal", rollout: "1.0")
+  upload_to_play_store(
+    aab: "app/build/outputs/#{isAab ? 'bundle' : 'apk'}/release/app#{isAab ? '.aab' : '-release.apk'}",
+    track: track,
+    rollout: rollout,
+    skip_upload_apk: isAab,
+    skip_upload_aab: !isAab,
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
+    timeout: 600,
+  )
+end
+
+desc "Runs all the tests"
+lane :test do
+  gradle(task: "test")
+end
+
+# desc "Submit a new Beta Build to Crashlytics Beta"
+# lane :beta do
+#   gradle(task: "clean assembleRelease")
+#   crashlytics
+
+#   # sh "your_script.sh"
+#   # You can also use other beta testing services here
+# end
+
+desc '''Deploy a new version to the Google Play
+  - options:
+    - `clean` clean before build if true, default to `true`
+    - `offline` let gradle works in offline mode if true, default to `true`
+    - `upload` deploy new release to Google Play if true, or just build the aab, default to `true`
+  - Example: `fastlane deploy clean:false offline:false upload:false`
+'''
+lane :deploy do |opts|
+  gradle(
+    task: "#{opts.fetch(:clean, true) ? 'clean ' : ''}bundleRelease",
+    flags: opts.fetch(:offline, true) ? "--offline" : "",
+  )
+  upload_artifact if opts.fetch(:upload, true)
+end

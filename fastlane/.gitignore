@@ -1,0 +1,19 @@
+/installer
+
+# fastlane specific
+report.xml
+
+# deliver temporary files
+Preview.html
+
+# snapshot generated screenshots
+screenshots
+
+# scan temporary files
+test_output
+
+# google service account key file
+api*.json
+
+# App metadata on Google Play/App Store
+metadata
