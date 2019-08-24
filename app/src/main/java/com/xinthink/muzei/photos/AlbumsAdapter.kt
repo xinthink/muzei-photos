@@ -188,6 +188,7 @@ private class SummaryRenderer(
         val size = dip(avatarSize)
         Picasso.get()
             .load("${account.photoUrl}")
+            .placeholder(R.drawable.avatar_placeholder)
             .resize(size, size)
             .centerCrop()
             .transform(CropCircleTransformation())
@@ -199,6 +200,7 @@ private class SummaryRenderer(
         if (picUrl != null) {
             Picasso.get()
                 .load("${album.coverPhotoBaseUrl}=w${ui.albumSizePx}-h${ui.albumSizePx}")
+                .placeholder(R.drawable.album_cover_placeholder)
                 .resize(ui.albumSizePx, ui.albumSizePx)
                 .centerCrop()
                 .into(ui.imgCover)
@@ -208,7 +210,7 @@ private class SummaryRenderer(
         } else {
             ui.imgCover.backgroundResource = R.drawable.selected_album_placeholder_border
             ui.imgTag.setTintCompat(R.color.accentColor_white50)
-            ui.imgStar.setTintCompat(color = Color.WHITE)
+            ui.imgStar.setTintCompat(R.color.star_placeholder_color)
         }
 
         val albumSelected = album?.id?.isNotEmpty() == true
@@ -441,6 +443,7 @@ private class AlbumRenderer(
         val imgSize = context.coverImageSize()
         Picasso.get()
             .load("${album.coverPhotoBaseUrl}=w$imgSize-h$imgSize")
+            .placeholder(R.drawable.album_cover_placeholder)
             .resize(imgSize, imgSize)
             .centerCrop()
             .transform(RoundedCornersTransformation(dip(6), 0))
@@ -583,12 +586,13 @@ private class AlbumUI(context: Context) {
     private fun _ConstraintLayout.checkIcon() = frameLayout {
         id = R.id.ic_check
         visible = false
-        imageView(R.drawable.circle_white)
-            .lparams(dip(20), dip(20)) {
-                gravity = Gravity.CENTER
-            }
+        imageView(R.drawable.circle_white) {
+            setTintCompat(R.color.check_icon)
+        }.lparams(dip(20), dip(20)) {
+            gravity = Gravity.CENTER
+        }
         imageViewCompat(R.drawable.ic_check_circle_black_24dp) {
-            setTintCompat(R.color.primaryDarkColor)
+            setTintCompat(R.color.check_icon_bg)
         }.lparams(dip(24), dip(24))
     }
 }

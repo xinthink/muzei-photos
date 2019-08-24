@@ -2,9 +2,12 @@
 <!-- https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=CFD8DC -->
 <resources>
     <color name="primaryColor">#cfd8dc</color>
-    <color name="accentColor">#9da6a9</color>
     <color name="primaryLightColor">#ffffff</color>
     <color name="primaryDarkColor">#9ea7aa</color>
+    <color name="secondaryColor">#455a64</color>
+    <color name="secondaryLightColor">#718792</color>
+    <color name="secondaryDarkColor">#1c313a</color>
+    <color name="accentColor">@color/primaryLightColor</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#b0000000</color>
     <color name="hintTextColor">#80000000</color>
@@ -12,6 +15,15 @@
     <color name="accentColor_50">#809da6a9</color>
     <color name="highlight_blue">#3388ff</color>
     <color name="golden">#ffcc66</color>
+    <color name="star_placeholder_color">#ffffff</color>
     <color name="mask_black_30">#4c000000</color>
+    <color name="mask_black_10">#1a000000</color>
+    <color name="mask_black_5">#0c000000</color>
+    <color name="mask_white_10">#1affffff</color>
+    <color name="mask_white_5">#0cffffff</color>
     <color name="sys_icon_color">#656368</color>
+    <color name="album_cover_bg">@color/primaryColor</color>
+    <color name="album_cover_mask">@color/mask_black_5</color>
+    <color name="check_icon">#ffffff</color>
+    <color name="check_icon_bg">@color/primaryDarkColor</color>
 </resources>
