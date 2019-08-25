@@ -17,6 +17,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntegerRes
+import androidx.annotation.PluralsRes
+import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.animation.addListener
@@ -34,6 +36,7 @@ var View.visibleKeepSpace: Boolean
     get() = visibility == View.VISIBLE
     set(value) { visibility = if (value) View.VISIBLE else View.INVISIBLE }
 
+val RecyclerView.ViewHolder.context: Context get() = itemView.context
 fun RecyclerView.ViewHolder.dip(value: Int): Int = itemView.dip(value)
 fun RecyclerView.ViewHolder.dip(value: Float): Int = itemView.dip(value)
 
@@ -43,6 +46,17 @@ fun RecyclerView.ViewHolder.integer(@IntegerRes resId: Int) = itemView.resources
 fun Context.long(@IntegerRes resId: Int) = integer(resId).toLong()
 fun View.long(@IntegerRes resId: Int) = integer(resId).toLong()
 fun RecyclerView.ViewHolder.long(@IntegerRes resId: Int) = integer(resId).toLong()
+
+fun RecyclerView.ViewHolder.string(
+    @StringRes resId: Int,
+    vararg formatArgs: Any
+): String = context.getString(resId, *formatArgs)
+
+fun RecyclerView.ViewHolder.quantityString(
+    @PluralsRes resId: Int,
+    quantity: Int,
+    vararg formatArgs: Any
+): String = context.resources.getQuantityString(resId, quantity, *formatArgs)
 
 @ColorInt fun Context.color(@ColorRes resId: Int) = ResourcesCompat.getColor(resources, resId, theme)
 @ColorInt fun View.color(@ColorRes resId: Int) = ResourcesCompat.getColor(resources, resId, context.theme)

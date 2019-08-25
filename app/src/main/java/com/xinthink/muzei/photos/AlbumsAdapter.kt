@@ -220,7 +220,7 @@ private class SummaryRenderer(
         ui.txtMsg.visible = !albumSelected
         if (albumSelected) {
             ui.txtTitle.text = album!!.title // album is non-null here
-            ui.txtSubtitle.text = itemView.context.getString(R.string.items_in_album, album.mediaItemsCount)
+            ui.txtSubtitle.text = quantityString(R.plurals.items_in_album, album.mediaItemsCount, album.mediaItemsCount)
         } else {
             ui.txtMsg.textResource = R.string.msg_pick_one_album
         }
@@ -449,7 +449,7 @@ private class AlbumRenderer(
             .transform(RoundedCornersTransformation(dip(6), 0))
             .into(ui.imgCover)
         ui.txtName.text = album.title
-        ui.txtCount.text = context.getString(R.string.items_in_album, album.mediaItemsCount)
+        ui.txtCount.text = quantityString(R.plurals.items_in_album, album.mediaItemsCount, album.mediaItemsCount)
 
         itemView.onClick {
             if (!album.isSelected) {
