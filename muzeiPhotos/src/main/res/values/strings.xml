@@ -1,7 +1,7 @@
 <resources>
-    <string name="name">Google Photos</string>
-    <string name="description">Google Photos album as wallpaper source</string>
-    <string name="default_photo_desc">From Google Photos album</string>
+    <string name="name">Photos Album</string>
+    <string name="description">Photos from your Google Photos album</string>
+    <string name="default_photo_desc">From your Photos album</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_prune">Clear downloaded photos</string>
 </resources>

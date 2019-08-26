@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Photos for Muzei</string>
+    <string name="app_name">Muzei - Photos album</string>
     <string name="action_settings">Settings</string>
     <string name="title_settings">Settings</string>
     <plurals name="items_in_album">
