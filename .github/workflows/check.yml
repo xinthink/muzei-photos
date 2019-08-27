@@ -1,4 +1,4 @@
-name: Android Check
+name: Check
 
 on:
   push:
@@ -18,8 +18,6 @@ jobs:
       with:
         java-version: 1.8
     - name: setup properties file
-      run: echo -e "auth_client_id=<client_id>\n\
-          auth_client_secret=<secret>\n\
-          auth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
-    - name: Check
+      run: echo -e "auth_client_id=<client_id>\nauth_client_secret=<secret>\nauth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
+    - name: check
       run: ./gradlew check
