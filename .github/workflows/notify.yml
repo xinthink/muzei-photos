@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: notify success to Telegram
-      if: github.event.check_suite.conclusion == success
+      if: github.event.check_suite.conclusion == 'success'
       uses: appleboy/telegram-action@master
       env:
         TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
@@ -22,7 +22,7 @@ jobs:
 
           _${{ github.event.check_suite.head_commit.message }}_"
     - name: notify failure to Telegram
-      if: github.event.check_suite.conclusion != success
+      if: github.event.check_suite.conclusion != 'success'
       uses: appleboy/telegram-action@master
       env:
         TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
