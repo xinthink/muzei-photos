@@ -43,5 +43,5 @@ deploy_task:
     - echo "$GOOGLE_API_KEYS" > muzeiPhotos/googleapi.properties
   install_fastlane_script:
     - bundle install && gem env && bundle show fastlane
-  script: bundle exec fastlane deploy --verbose
+  script: bundle exec fastlane deploy offline:false --verbose
   << : *CLEAN_TASK_TEMPLATE
