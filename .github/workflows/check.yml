@@ -3,7 +3,7 @@ name: Android Check
 on:
   push:
     branches:
-    - !deploy
+    - '!deploy'
     - '*'
     pull_request:
       paths: '*'
