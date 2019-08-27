@@ -11,9 +11,19 @@ jobs:
       env:
         TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
         TELEGRAM_TO: ${{ secrets.TelegramTarget }}
-      # with:
-      #   args: "A new commit has been pushed. commit sha: {{ commit.sha }}"
+        DEBUG: true
+        FORMAT: markdown
+      with:
+        args: |
+          ":white_check_mark: :red_circle: Build compelete on $GITHUB_REPOSITORY
+
+          \`$GITHUB_REF\` \`$GITHUB_SHA\` by *$GITHUB_ACTOR*
+
+              `cat $GITHUB_EVENT_PATH`
+
+          "
 # GITHUB_REPOSITORY
+# GITHUB_REF
 # GITHUB_ACTOR
 # GITHUB_SHA
 # GITHUB_EVENT_PATH	The path of the file with the complete webhook event payload. For example, /github/workflow/event.json
