@@ -16,11 +16,11 @@ jobs:
         FORMAT: markdown
       with:
         args: |
-        "✅[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
+          "✅[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
 
-        `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
+          `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
 
-        _${{ github.event.check_suite.head_commit.message }}_"
+          _${{ github.event.check_suite.head_commit.message }}_"
     - name: notify failure to Telegram
       if: ${{ github.event.check_suite.conclusion }} != success
       uses: appleboy/telegram-action@master
@@ -31,8 +31,8 @@ jobs:
         FORMAT: markdown
       with:
         args: |
-        "🔴[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
+          "🔴[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
 
-        `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
+          `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
 
-        _${{ github.event.check_suite.head_commit.message }}_"
+          _${{ github.event.check_suite.head_commit.message }}_"
