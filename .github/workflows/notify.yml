@@ -26,9 +26,11 @@ jobs:
       if: github.event.check_suite.conclusion == success
       << : *TELEGRAM_ENV_TEMPLATE
       with:
-        args: ✅<< : *TELEGRAM_MSG_TEMPLATE
+        args: ✅\
+          << : *TELEGRAM_MSG_TEMPLATE
     - name: notify failure to Telegram
       if: github.event.check_suite.conclusion != success
       << : *TELEGRAM_ENV_TEMPLATE
       with:
-        args: 🔴<< : *TELEGRAM_MSG_TEMPLATE
+        args: 🔴\
+          << : *TELEGRAM_MSG_TEMPLATE
