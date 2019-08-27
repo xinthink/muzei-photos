@@ -9,14 +9,12 @@ telegram_env_template: &TELEGRAM_ENV_TEMPLATE
     TELEGRAM_TO: ${{ secrets.TelegramTarget }}
     DEBUG: true
     FORMAT: markdown
+    MESSAGE: |
+      "[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
 
-telegram_msg_template: &TELEGRAM_MSG_TEMPLATE
-  |
-  "[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
+      `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
 
-  `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
-
-  _${{ github.event.check_suite.head_commit.message }}_"
+      _${{ github.event.check_suite.head_commit.message }}_"
 
 jobs:
   telegram:
@@ -26,11 +24,9 @@ jobs:
       if: github.event.check_suite.conclusion == success
       << : *TELEGRAM_ENV_TEMPLATE
       with:
-        args: ✅\
-          << : *TELEGRAM_MSG_TEMPLATE
+        args: ✅${MESSAGE}
     - name: notify failure to Telegram
       if: github.event.check_suite.conclusion != success
       << : *TELEGRAM_ENV_TEMPLATE
       with:
-        args: 🔴\
-          << : *TELEGRAM_MSG_TEMPLATE
+        args: 🔴${MESSAGE}
