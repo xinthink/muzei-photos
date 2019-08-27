@@ -13,11 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: set up JDK 1.8
+    - name: setup JDK
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - |
+    - name: setup properties file
+      run: |
       echo -e "auth_client_id=<client_id>
         auth_client_secret=<secret>
         auth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
