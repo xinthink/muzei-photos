@@ -2,28 +2,33 @@ name: Notify
 
 on: check_suite
 
+telegram_env_template: &TELEGRAM_ENV_TEMPLATE
+  uses: appleboy/telegram-action@master
+    env:
+      TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
+      TELEGRAM_TO: ${{ secrets.TelegramTarget }}
+      DEBUG: true
+      FORMAT: markdown
+
+telegram_msg_template: &TELEGRAM_MSG_TEMPLATE
+  |
+  "[${{ github.event.repository.full_name }} #${{ github.event.check_suite.id }}](${{ github.event.check_suite.url }}) *${{ github.event.check_suite.conclusion }}*.
+
+  `${{ github.event.check_suite.head_branch }}` `${{ github.event.check_suite.head_sha }}` by *${{ github.event.check_suite.head_commit.author.name }}*
+
+  _${{ github.event.check_suite.head_commit.message }}_"
+
 jobs:
   telegram:
     runs-on: ubuntu-latest
     steps:
-    - name: notify to Telegram channel
-      uses: appleboy/telegram-action@master
-      env:
-        TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
-        TELEGRAM_TO: ${{ secrets.TelegramTarget }}
-        DEBUG: true
-        FORMAT: markdown
+    - name: notify success to Telegram
+      if: ${{ github.event.check_suite.conclusion }} == success
+      << : *TELEGRAM_ENV_TEMPLATE
       with:
-        args: |
-          ":white_check_mark: :red_circle: Build compelete on $GITHUB_REPOSITORY
-
-          \`$GITHUB_REF\` \`$GITHUB_SHA\` by *$GITHUB_ACTOR*
-
-              `cat $GITHUB_EVENT_PATH`
-
-          "
-# GITHUB_REPOSITORY
-# GITHUB_REF
-# GITHUB_ACTOR
-# GITHUB_SHA
-# GITHUB_EVENT_PATH	The path of the file with the complete webhook event payload. For example, /github/workflow/event.json
+        args: ✅<< : *TELEGRAM_MSG_TEMPLATE
+    - name: notify failure to Telegram
+      if: ${{ github.event.check_suite.conclusion }} != success
+      << : *TELEGRAM_ENV_TEMPLATE
+      with:
+        args: 🔴<< : *TELEGRAM_MSG_TEMPLATE
