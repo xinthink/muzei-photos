@@ -55,7 +55,7 @@ desc '''Deploy a new version to the Google Play
 lane :deploy do |opts|
   gradle(
     task: "#{opts.fetch(:clean, true) ? 'clean ' : ''}bundleRelease",
-    flags: opts.fetch(:offline, true) ? "--offline" : "",
+    flags: "--build-cache#{opts.fetch(:offline, true) ? ' --offline' : ''}",
   )
   upload_artifact if opts.fetch(:upload, true)
 end

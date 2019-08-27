@@ -23,7 +23,7 @@ check_task:
       echo -e "auth_client_id=<client_id>
         auth_client_secret=<secret>
         auth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
-  script: ./gradlew check
+  script: ./gradlew --build-cache check
   << : *CLEAN_TASK_TEMPLATE
 
 deploy_task:
