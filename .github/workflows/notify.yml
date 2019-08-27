@@ -4,11 +4,11 @@ on: check_suite
 
 telegram_env_template: &TELEGRAM_ENV_TEMPLATE
   uses: appleboy/telegram-action@master
-    env:
-      TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
-      TELEGRAM_TO: ${{ secrets.TelegramTarget }}
-      DEBUG: true
-      FORMAT: markdown
+  env:
+    TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
+    TELEGRAM_TO: ${{ secrets.TelegramTarget }}
+    DEBUG: true
+    FORMAT: markdown
 
 telegram_msg_template: &TELEGRAM_MSG_TEMPLATE
   |
