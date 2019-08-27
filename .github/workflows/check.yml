@@ -18,9 +18,10 @@ jobs:
       with:
         java-version: 1.8
     - name: setup properties file
-      run: |
-      echo -e "auth_client_id=<client_id>
-        auth_client_secret=<secret>
-        auth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
+      run: 
+      - |
+        echo -e "auth_client_id=<client_id>
+          auth_client_secret=<secret>
+          auth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
     - name: Check
       run: ./gradlew check
