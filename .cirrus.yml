@@ -7,11 +7,12 @@ env:
   GOOGLE_API_KEYS: ENCRYPTED[81126112c14c5ffde390cec776beac7cc73c0d3421c04d2549de715f4c09bd252496e221559e900591b3c592adbe0671]
 
 clean_task_template: &CLEAN_TASK_TEMPLATE
-  cleanup_script:
-    - rm -rf ~/.gradle/caches/$GRADLE_VERSION/
-    - rm -rf ~/.gradle/caches/transforms-1
-    - rm -rf ~/.gradle/caches/journal-1
-    - if [ -d ~/.gradle/caches ]; then find ~/.gradle/caches -name "*.lock" -type f -delete; fi
+  always:
+    cleanup_script:
+      - rm -rf ~/.gradle/caches/$GRADLE_VERSION/
+      - rm -rf ~/.gradle/caches/transforms-1
+      - rm -rf ~/.gradle/caches/journal-1
+      - if [ -d ~/.gradle/caches ]; then find ~/.gradle/caches -name "*.lock" -type f -delete; fi
 
 check_task:
   only_if: $BRANCH != "deploy"
