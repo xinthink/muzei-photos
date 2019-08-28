@@ -28,4 +28,8 @@ jobs:
         echo -e "${{ toJson(secrets.JSON_KEY) }}" > play-dev-xinthink-3e418a168938.json
         echo "${{ secrets.JKS_BASE64 }}" | base64 --decode > app/upload_key.jks
     - name: publish to Google Play # publish a new release to internal track
-      run: bundle exec fastlane deploy offline:false --verbose
+      run: |
+        ls -lh play-dev-xinthink-3e418a168938.json
+        cat play-dev-xinthink-3e418a168938.json
+        echo " ---- json_key=${{ secrets.JSON_KEY }}"
+        bundle exec fastlane deploy offline:false --verbose
