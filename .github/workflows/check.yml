@@ -2,9 +2,9 @@ name: Check
 
 on:
   push:
-    branches: !'deploy'
-    pull_request:
-      paths: '*'
+    branches: '!deploy'
+  pull_request:
+    paths: '*'
 
 jobs:
   check:

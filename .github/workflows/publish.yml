@@ -5,7 +5,7 @@ on:
     branches: 'deploy'
 
 jobs:
-  check:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
