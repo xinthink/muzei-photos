@@ -2,9 +2,7 @@ name: Check
 
 on:
   push:
-    branches:
-    - '!deploy'
-    - '*'
+    branches: '!deploy'
     pull_request:
       paths: '*'
 
@@ -19,9 +17,6 @@ jobs:
       with:
         java-version: 1.8
     - name: setup properties file
-      run: |
-        echo -e "auth_client_id=<client_id>\nauth_client_secret=<secret>\nauth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
-        echo "---- android.sdk=$ANDROID_SDK android.home=$ANDROID_HOME"
-      # run: echo "${{ secrets.GoogleApiKeys }}" > muzeiPhotos/googleapi.properties
+      run: echo -e "auth_client_id=id\nauth_client_secret=secret\nauth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
     - name: check
       run: ./gradlew check -i

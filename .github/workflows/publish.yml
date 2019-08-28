@@ -1,0 +1,31 @@
+name: Publish
+
+on:
+  push:
+    branches: 'deploy'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+    - name: setup JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: set up Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: setup Fastlane
+      run: gem install bundler && bundle install
+    - name: setup properties & keys
+      run: |
+        echo "${{ secrets.GoogleApiKeys }}" > muzeiPhotos/googleapi.properties
+        echo -e "store=upload_key.jks\nalias=upload\npass=${{ secrets.JKS_PASS }}\nstorePass=${{ secrets.JKS_PASS }}" > app/keystore.properties
+        echo -e "sdk.dir=$ANDROID_HOME\nkeystore.props.file=keystore.properties" > local.properties
+        echo "${{ secrets.JSON_KEY }}" > play-dev-xinthink-3e418a168938.json
+        echo "${{ secrets.JKS_BASE64 }}" | base64 --decode > app/upload_key.jks
+    - name: publish to Google Play # publish a new release to internal track
+      run: bundle exec fastlane deploy offline:false --verbose
