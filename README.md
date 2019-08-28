@@ -1,13 +1,15 @@
 # Muzei - Google Photos
 
-[![Check Status][workflow-badge]][github-runs]
+[![Check Status][check-badge]][github-runs]
+[![Build Status][publish-badge]][github-runs]
 [![MIT][license-badge]][license]
 
 This's a plugin for [Muzei], which is an Android live wallpaper app. This plugin allows you making [Google Photos] a [Muzei] wallpaper source.
 
 [![Get it on Google Play][play-badge]][play-link]
 
-[workflow-badge]: https://github.com/xinthink/muzei-photos/workflows/Check/badge.svg
+[check-badge]: https://github.com/xinthink/muzei-photos/workflows/Check/badge.svg
+[publish-badge]: https://github.com/xinthink/muzei-photos/workflows/Publish/badge.svg
 [github-runs]: https://github.com/xinthink/muzei-photos/actions
 [ci-badge]: https://img.shields.io/cirrus/github/xinthink/muzei-photos/master?logo=cirrus-ci
 [ci-link]: https://cirrus-ci.com/github/xinthink/muzei-photos
