@@ -30,6 +30,6 @@ jobs:
     - name: publish to Google Play # publish a new release to internal track
       run: |
         ls -lh play-dev-xinthink-3e418a168938.json
-        cat play-dev-xinthink-3e418a168938.json
-        echo " ---- json_key=${{ secrets.JSON_KEY }}"
+        # cat play-dev-xinthink-3e418a168938.json
+        echo " ---- json_key=${{ toJson(secrets.JSON_KEY) }}"
         bundle exec fastlane deploy offline:false --verbose
