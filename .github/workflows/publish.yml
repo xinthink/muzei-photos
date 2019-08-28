@@ -25,11 +25,10 @@ jobs:
         echo "${{ secrets.GoogleApiKeys }}" > muzeiPhotos/googleapi.properties
         echo -e "store=upload_key.jks\nalias=upload\npass=${{ secrets.JKS_PASS }}\nstorePass=${{ secrets.JKS_PASS }}" > app/keystore.properties
         echo -e "sdk.dir=$ANDROID_HOME\nkeystore.props.file=keystore.properties" > local.properties
-        echo -e "${{ toJson(secrets.JSON_KEY) }}" > play-dev-xinthink-3e418a168938.json
+        echo "${{ secrets.jsonKeyBase64 }}" | base64 --decode > play-dev-xinthink-3e418a168938.json
         echo "${{ secrets.JKS_BASE64 }}" | base64 --decode > app/upload_key.jks
     - name: publish to Google Play # publish a new release to internal track
       run: |
         ls -lh play-dev-xinthink-3e418a168938.json
-        # cat play-dev-xinthink-3e418a168938.json
-        echo " ---- json_key=${{ toJson(secrets.JSON_KEY) }}"
+        cat play-dev-xinthink-3e418a168938.json
         bundle exec fastlane deploy offline:false --verbose
