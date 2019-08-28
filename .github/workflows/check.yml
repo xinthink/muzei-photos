@@ -2,7 +2,8 @@ name: Check
 
 on:
   push:
-    branches: '!deploy'
+    branches:
+    - '!deploy'
     pull_request:
       paths: '*'
 
