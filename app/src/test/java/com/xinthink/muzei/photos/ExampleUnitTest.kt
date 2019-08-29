@@ -1,5 +1,6 @@
 package com.xinthink.muzei.photos
 
+/* ktlint-disable no-wildcard-imports */
 import org.junit.Test
 
 import org.junit.Assert.*

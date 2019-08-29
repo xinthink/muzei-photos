@@ -1,5 +1,6 @@
 package com.xinthink.muzei.photos
 
+/* ktlint-disable no-wildcard-imports */
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 

@@ -50,7 +50,7 @@ import org.jetbrains.anko.verticalLayout
  */
 class AlbumsAdapter(
     private val callback: Callback
-): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val mAlbums = mutableListOf<Album>()
 
     init {
@@ -484,10 +484,8 @@ private class AlbumRenderer(
         /** Instantiate an [AlbumRenderer] */
         fun create(
             context: Context,
-            onClick: (album: Album, position: Int
-        ) -> Unit): AlbumRenderer {
-            return AlbumRenderer(AlbumUI(context), onClick)
-        }
+            onClick: (album: Album, position: Int) -> Unit
+        ): AlbumRenderer = AlbumRenderer(AlbumUI(context), onClick)
     }
 }
 

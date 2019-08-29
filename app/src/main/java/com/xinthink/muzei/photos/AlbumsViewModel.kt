@@ -25,7 +25,7 @@ private const val TAG = "MZPAlbVM"
 /**
  * ViewModel for Albums screen
  */
-class AlbumsViewModel: ViewModel() {
+class AlbumsViewModel : ViewModel() {
     private var mAccount = MutableLiveData<GoogleSignInAccount>()
     val account: LiveData<GoogleSignInAccount> get() = mAccount
 
