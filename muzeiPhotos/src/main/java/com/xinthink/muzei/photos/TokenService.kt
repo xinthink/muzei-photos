@@ -50,7 +50,7 @@ interface TokenService {
     ): TokenInfo
 
     companion object {
-        private const val TAG = "TokenService"
+        private const val TAG = "MZPTokenSvc"
 
         @Volatile
         private var mTokenInfo: TokenInfo = TokenInfo()

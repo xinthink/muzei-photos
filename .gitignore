@@ -20,6 +20,8 @@
 build
 /captures
 .externalNativeBuild
+**/bak/
+**/*.log
 
 google-services.json
 googleapi.properties

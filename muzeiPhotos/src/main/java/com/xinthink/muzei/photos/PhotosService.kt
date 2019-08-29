@@ -29,6 +29,7 @@ interface PhotosService {
     ): Call<MediaItemsPagination>
 
     companion object {
+        private const val TAG = "MZPhotosSvc"
 
         /** Fetch Photos albums */
         suspend fun Context.fetchPhotosAlbums(nextPageToken: String? = null): AlbumsPagination {

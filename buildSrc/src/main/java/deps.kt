@@ -33,6 +33,7 @@ object V {
     const val muzeiApiVersion = "3.1.0"
     const val gmsAuthVersion = "16.0.1"
 
+    const val ktlintVersion = "0.34.2"
     const val junitVersion = "4.12"
     const val testRunnerVersion = "1.2.0"
     const val espressoVersion = "3.2.0"
@@ -41,6 +42,7 @@ object V {
 // plugin dependencies
 val DependencyHandler.androidPlugin get() = "com.android.tools.build:gradle:${V.androidPluginVersion}"
 val DependencyHandler.kotlinPlugin get() = "org.jetbrains.kotlin:kotlin-gradle-plugin:${V.kotlinVersion}"
+val DependencyHandler.ktlint get() = "com.pinterest:ktlint:${V.ktlintVersion}"
 
 
 /** Kotlin dependency with default stdlib module */
