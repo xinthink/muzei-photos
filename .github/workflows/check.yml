@@ -2,7 +2,10 @@ name: Check
 
 on:
   push:
-    branches: '!deploy'
+    branches:
+    - master
+    - 'refs/pull/*'
+    - '!**/deploy'
   pull_request:
     paths: '*'
 
