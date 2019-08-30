@@ -24,7 +24,21 @@ jobs:
     - name: check
       run: ./gradlew check -i --build-cache
     - name: xxx
-      run: echo "${{ toJson(steps) }}"
+      run: echo "steps=${{ toJson(steps) }} job=${{ toJson(job) }}"
+    # - name: notification
+    #   uses: xinthink/action-telegram@v0.1-release
+    #   with:
+    #     botToken: ${{ secrets.TelegramBotToken }}
+    #     chatId: ${{ secrets.TelegramTarget }}
+    #     jobStatus: ${{ toJson(steps) }}
+
+  notification:
+    runs-on: ubuntu-latest
+    needs: check
+    if: !cancelled()
+    steps:
+    - name: xxx
+      run: echo "steps=${{ toJson(steps) }} job=${{ toJson(job) }}"
     - name: notification
       uses: xinthink/action-telegram@v0.1-release
       with:
