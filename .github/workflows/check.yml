@@ -38,4 +38,4 @@ jobs:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
         jobStatus: ${{ job.status }}
-        skipSuccess: false
+        # skipSuccess: false
