@@ -24,8 +24,10 @@ jobs:
     - name: check
       run: ./gradlew tasksx -i --build-cache
     - name: dump
+      if: cancelled() == false
       run: echo "job=${{ toJson(job) }} steps=${{ toJson(steps.check) }}"
     - name: notification
+      if: cancelled() == false
       uses: xinthink/action-telegram@v0.1-release
       with:
         botToken: ${{ secrets.TelegramBotToken }}
