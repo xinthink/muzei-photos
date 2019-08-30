@@ -22,10 +22,10 @@ jobs:
     - name: setup properties file
       run: echo -e "auth_client_id=id\nauth_client_secret=secret\nauth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
     - name: check
-      run: ./gradlew tasksx -i --build-cache
+      run: ./gradlew check -i --build-cache
     - name: dump
       if: cancelled() == false
-      run: echo "job=${{ toJson(job) }} steps=${{ toJson(steps.check) }}"
+      run: echo "job=${{ toJson(job) }} steps=${{ toJson(steps) }}"
     - name: notification
       if: cancelled() == false
       uses: xinthink/action-telegram@v0.1-release
