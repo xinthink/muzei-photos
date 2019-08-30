@@ -34,8 +34,9 @@ jobs:
 
     - name: notification
       if: cancelled() == false
-      uses: xinthink/action-telegram@v0.1.0-release
+      uses: xinthink/action-telegram@v1
       with:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
         jobStatus: ${{ job.status }}
+        skipSuccess: false
