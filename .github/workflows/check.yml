@@ -22,26 +22,12 @@ jobs:
     - name: setup properties file
       run: echo -e "auth_client_id=id\nauth_client_secret=secret\nauth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
     - name: check
-      run: ./gradlew check -i --build-cache
-    - name: xxx
-      run: echo "steps=${{ toJson(steps) }} job=${{ toJson(job) }}"
-    # - name: notification
-    #   uses: xinthink/action-telegram@v0.1-release
-    #   with:
-    #     botToken: ${{ secrets.TelegramBotToken }}
-    #     chatId: ${{ secrets.TelegramTarget }}
-    #     jobStatus: ${{ toJson(steps) }}
-
-  notification:
-    runs-on: ubuntu-latest
-    needs: check
-    if: cancelled() == false
-    steps:
-    - name: xxx
-      run: echo "steps=${{ toJson(steps) }} job=${{ toJson(job) }}"
+      run: ./gradlew tasksx -i --build-cache
+    - name: dump
+      run: echo "job=${{ toJson(job) }} steps=${{ toJson(steps.check) }}"
     - name: notification
       uses: xinthink/action-telegram@v0.1-release
       with:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
-        jobStatus: ${{ toJson(steps) }}
+        jobStatus: ${{ job.status }}
