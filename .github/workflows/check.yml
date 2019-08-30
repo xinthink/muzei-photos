@@ -28,5 +28,3 @@ jobs:
       with:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
-      env:
-        DEBUG: true
