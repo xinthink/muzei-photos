@@ -28,4 +28,4 @@ jobs:
       with:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
-        jobStatus: ${{ job.status }}
+        jobStatus: ${{ toJson(steps) }}
