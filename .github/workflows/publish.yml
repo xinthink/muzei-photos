@@ -32,30 +32,10 @@ jobs:
     - name: publish to Google Play
       run: bundle exec fastlane deploy offline:false --verbose
 
-    # notifications
-    - name: notify success to Telegram
-      if:  success()
-      uses: appleboy/telegram-action@master
-      env:
-        TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
-        TELEGRAM_TO: ${{ secrets.TelegramTarget }}
-        DEBUG: true
-        FORMAT: markdown
+    - name: notification
+      if: cancelled() == false
+      uses: xinthink/action-telegram@v0.1.0-release
       with:
-        args: |
-          "✅ [${{ github.repository }} publication](${{ github.event.repository.html_url }}/actions) *succeed*.
-
-          `${{ github.ref }}` `${{ github.sha }}` by *${{ github.actor }}*"
-    - name: notify failure to Telegram
-      if: failure()
-      uses: appleboy/telegram-action@master
-      env:
-        TELEGRAM_TOKEN: ${{ secrets.TelegramBotToken }}
-        TELEGRAM_TO: ${{ secrets.TelegramTarget }}
-        DEBUG: true
-        FORMAT: markdown
-      with:
-        args: |
-          "🔴 [${{ github.repository }} publication](${{ github.event.repository.html_url }}/actions) *failed*.
-
-          `${{ github.ref }}` `${{ github.sha }}` by *${{ github.actor }}*"
+        botToken: ${{ secrets.TelegramBotToken }}
+        chatId: ${{ secrets.TelegramTarget }}
+        jobStatus: ${{ job.status }}
