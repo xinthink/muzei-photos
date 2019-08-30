@@ -22,9 +22,11 @@ jobs:
     - name: setup properties file
       run: echo -e "auth_client_id=id\nauth_client_secret=secret\nauth_scope_photos=readonly" > muzeiPhotos/googleapi.properties
     - name: check
-      run: ./gradlew check -i
+      run: ./gradlew check -i --build-cache
     - name: notification
       uses: xinthink/action-telegram@v0.1-release
       with:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
+      env:
+        DEBUG: true
