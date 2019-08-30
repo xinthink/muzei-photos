@@ -6,8 +6,13 @@ on:
     - master
     - 'refs/pull/*'
     - '!**/deploy'
+    - '!deploy'
   pull_request:
-    paths: '*'
+    branches:
+    - master
+    - 'refs/pull/*'
+    - '!**/deploy'
+    - '!deploy'
 
 jobs:
   check:
@@ -33,3 +38,4 @@ jobs:
         botToken: ${{ secrets.TelegramBotToken }}
         chatId: ${{ secrets.TelegramTarget }}
         jobStatus: ${{ job.status }}
+        skipSuccess: false
