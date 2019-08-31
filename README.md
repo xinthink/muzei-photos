@@ -4,7 +4,7 @@
 [![Build Status][publish-badge]][github-runs]
 [![MIT][license-badge]][license]
 
-This's a plugin for [Muzei], which is an Android live wallpaper app. This plugin allows you making [Google Photos] a [Muzei] wallpaper source.
+This's a plugin for [Muzei], displays photos from your [Google Photos] as wallpapers on Android devices. It works with [Muzei], which is an Android live wallpaper app.
 
 [![Get it on Google Play][play-badge]][play-link]
 
