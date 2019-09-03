@@ -1,6 +1,7 @@
 package com.xinthink.muzei.photos
 
 import android.content.Context
+import android.util.Log
 import com.xinthink.muzei.photos.TokenService.Companion.refreshAccessToken
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -13,12 +14,16 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.io.IOException
 
 interface PhotosService {
 
     @GET("albums")
-    suspend fun albums(): AlbumsPagination
+    suspend fun albums(
+        @Query("pageSize") pageSize: Int = 10,
+        @Query("pageToken") pageToken: String? = null
+    ): AlbumsPagination
 
     @POST("./mediaItems:search")
     @FormUrlEncoded
@@ -32,25 +37,30 @@ interface PhotosService {
         private const val TAG = "MZPhotosSvc"
 
         /** Fetch Photos albums */
-        suspend fun Context.fetchPhotosAlbums(nextPageToken: String? = null): AlbumsPagination {
+        suspend fun Context.fetchPhotosAlbums(
+            pageSize: Int = 10,
+            pageToken: String? = null
+        ): AlbumsPagination {
             val token = TokenService.tokenInfo
             if (token.isExpired) {
                 refreshAccessToken(token)
             }
-            return create().albums()
+            Log.d(TAG, "fetching albums pageSize=$pageSize pageToken=${pageToken?.isNotEmpty()}")
+            return create().albums(pageSize, pageToken)
         }
 
         @Throws(IOException::class)
         internal fun Context.albumPhotos(
-            @Field("albumId") albumId: String,
-            @Field("pageSize") pageSize: Int = 10,
-            @Field("pageToken") pageToken: String? = null
+            albumId: String,
+            pageSize: Int = 10,
+            pageToken: String? = null
         ): MediaItemsPagination {
             runBlocking {
                 val token = TokenService.tokenInfo
                 if (token.isExpired) refreshAccessToken(token)
             }
 
+            Log.d(TAG, "fetching photos album=$albumId pageSize=$pageSize pageToken=${pageToken?.isNotEmpty()}")
             return create()
                 .albumPhotos(
                     albumId = albumId,
