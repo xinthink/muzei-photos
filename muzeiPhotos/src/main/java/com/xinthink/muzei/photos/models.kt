@@ -69,7 +69,8 @@ sealed class AlbumsResult
 
 data class AlbumsPagination(
     val albums: List<Album>,
-    val nextPageToken: String
+    val nextPageToken: String,
+    var isIncremental: Boolean = false
 ) : AlbumsResult()
 
 data class AlbumsFailure(val error: Throwable) : AlbumsResult()

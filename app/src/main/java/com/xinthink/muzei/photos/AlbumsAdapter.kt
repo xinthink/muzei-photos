@@ -82,6 +82,15 @@ class AlbumsAdapter(
         notifyDataSetChanged()
     }
 
+    /** Append albums to the list */
+    fun appendAlbums(albums: List<Album>?) {
+        val prevSize = mAlbums.size
+        if (!albums.isNullOrEmpty()) {
+            mAlbums.addAll(albums)
+            notifyItemRangeInserted(prevSize + 1, albums.size)
+        }
+    }
+
     /** Remove all the albums */
     fun clearAlbums() {
         val size = mAlbums.size
@@ -113,7 +122,7 @@ class AlbumsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onBindViewHolder position=$position payloads=$payloads")
+        if (BuildConfig.DEBUG) Log.v(TAG, "onBindViewHolder position=$position payloads=$payloads")
         super.onBindViewHolder(holder, position, payloads)
     }
 
@@ -130,7 +139,7 @@ class AlbumsAdapter(
     }
 
     companion object {
-        const val TAG = "MZP.AlbApt"
+        const val TAG = "MZPAlbApt"
         private const val TYPE_ALBUM = 0
         private const val TYPE_ACCOUNT = 1
     }

@@ -44,6 +44,9 @@ class AlbumsViewModel : ViewModel() {
     @Volatile
     private var albumsPageToken: String? = null
 
+    /** If we don't have a valid nextPageToken */
+    private val hasNoPageToken: Boolean get() = albumsPageToken?.isNotEmpty() != true
+
     /** Check if authorized or not */
     val isUnauthorized: Boolean get() = account.value == null || !mToken.value.isValid
 
@@ -56,8 +59,7 @@ class AlbumsViewModel : ViewModel() {
     fun loadAuthorization(context: Context?) {
         mAccount.value = GoogleSignIn.getLastSignedInAccount(context)
         mToken.value = context?.loadToken()
-        if (BuildConfig.DEBUG) Log.d(TAG, "restored token from storage: $mToken")
-        context?.loadToken()
+        if (BuildConfig.DEBUG) Log.d(TAG, "restored token from storage: ${mToken.value}")
     }
 
     /** Restore saved data about selected album */
@@ -126,12 +128,15 @@ class AlbumsViewModel : ViewModel() {
 
     /** Fetch Photos albums */
     fun fetchAlbums(context: Context, isIncremental: Boolean = false) {
+        if (mLoading.value == true || (isIncremental && hasNoPageToken)) return
+
         if (!isIncremental) albumsPageToken = null // clear pagination when refreshing
-        mLoading.postValue(true)
+        mLoading.value = true
         viewModelScope.launch {
             try {
-                val pagination = context.fetchPhotosAlbums(albumsPageToken)
+                val pagination = context.fetchPhotosAlbums(pageToken = albumsPageToken)
                 albumsPageToken = pagination.nextPageToken
+                pagination.isIncremental = isIncremental
                 mAlbums.postValue(pagination)
             } catch (e: Throwable) {
                 mAlbums.postValue(AlbumsFailure(e))
