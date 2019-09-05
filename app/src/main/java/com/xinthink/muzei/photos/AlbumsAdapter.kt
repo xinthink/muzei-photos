@@ -208,10 +208,10 @@ private class SummaryRenderer(
         val picUrl = album?.coverPhotoBaseUrl
         if (picUrl != null) {
             Picasso.get()
-                .load("${album.coverPhotoBaseUrl}=w${ui.albumSizePx}-h${ui.albumSizePx}")
+                .load("${album.coverPhotoBaseUrl}=s${ui.albumSizePx}-p-no") // make it a square and no play button for video thumbnail
                 .placeholder(R.drawable.album_cover_placeholder)
-                .resize(ui.albumSizePx, ui.albumSizePx)
-                .centerCrop()
+                // .resize(ui.albumSizePx, ui.albumSizePx)
+                // .centerCrop()
                 .into(ui.imgCover)
             ui.imgCover.backgroundColor = Color.TRANSPARENT
             ui.imgTag.setTintCompat(R.color.mask_black_30)
@@ -451,10 +451,10 @@ private class AlbumRenderer(
     fun render(album: Album) {
         val imgSize = context.coverImageSize()
         Picasso.get()
-            .load("${album.coverPhotoBaseUrl}=w$imgSize-h$imgSize")
+            .load("${album.coverPhotoBaseUrl}=s$imgSize-p-no") // make it a square and no play button for video thumbnail
             .placeholder(R.drawable.album_cover_placeholder)
-            .resize(imgSize, imgSize)
-            .centerCrop()
+            // .resize(imgSize, imgSize)
+            // .centerCrop()
             .transform(RoundedCornersTransformation(dip(6), 0))
             .into(ui.imgCover)
         ui.txtName.text = album.title
