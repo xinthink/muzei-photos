@@ -92,25 +92,16 @@ class PhotosWorker(
             // .filter { it.mimeType.startsWith("image") }
             .map {
                 if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $it")
-                // TODO to fit the screen dimension
-                val w = it.mediaMetadata?.width
-                val h = it.mediaMetadata?.height
                 Artwork().apply {
                     token = it.id
                     attribution = it.mediaMetadata?.formattedCreationTime()
                     title = if (it.description?.isNotEmpty() == true) it.description else defaultDesc
                     byline = it.contributorInfo?.displayName
-                    persistentUri = (if (w != null && h != null) "${it.baseUrl}=w$w-h$h" else it.baseUrl).toUri()
+                    persistentUri = "${it.baseUrl}=d".toUri()
                     webUri = it.productUrl.toUri()
                 }
             })
         return Result.success()
-    }
-
-    private val maxPhotoSize: Pair<Int, Int> by lazy {
-        applicationContext.run {
-            screenWidth * 2 to screenHeigth
-        }
     }
 
     private fun loadSelectedAlbumId(): String? =
