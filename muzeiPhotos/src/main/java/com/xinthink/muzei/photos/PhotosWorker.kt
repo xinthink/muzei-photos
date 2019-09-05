@@ -89,7 +89,7 @@ class PhotosWorker(
         )
         val defaultDesc = applicationContext.getString(R.string.default_photo_desc)
         providerClient.addArtwork(pagination.mediaItems
-            .filter { it.mimeType.startsWith("image") }
+            // .filter { it.mimeType.startsWith("image") }
             .map {
                 if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $it")
                 // TODO to fit the screen dimension

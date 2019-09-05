@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.xinthink.muzei.photos.worker.BuildConfig
+import com.xinthink.widgets.LinearRecyclerOnScrollListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
@@ -93,7 +94,7 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
 
     private fun initRecyclerView(rv: RecyclerView) {
         albumsAdapter = AlbumsAdapter(this)
-        rv.layoutManager = GridLayoutManager(this, 2).apply {
+        val lm = GridLayoutManager(this, 2).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int) = when (position) {
                     0 -> 2
@@ -115,7 +116,10 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
                 outRect.set(dip(7), dip(7), dip(7), if (atBottom) dip(28) else dip(14))
             }
         })
+        rv.layoutManager = lm
         rv.adapter = albumsAdapter
+
+        rv.addOnScrollListener(LinearRecyclerOnScrollListener(lm, ::loadMore))
     }
 
     private fun observeViewModel() {
@@ -146,12 +150,16 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
     private val onAlbumsResult = Observer<AlbumsResult?> {
         when (it) {
             is AlbumsPagination -> {
-                albumsAdapter.resetAlbums(it.albums)
+                (if (it.isIncremental) albumsAdapter::appendAlbums else albumsAdapter::resetAlbums)(it.albums)
                 updateSelectedAlbumInfo(it)
             }
             is AlbumsFailure -> toast("Fetching albums failed: ${it.error}")
             else -> Unit
         }
+    }
+
+    private fun loadMore() {
+        if (!isUnauthorized()) viewModel.fetchAlbums(this, isIncremental = true)
     }
 
     /** update data of current selected album */

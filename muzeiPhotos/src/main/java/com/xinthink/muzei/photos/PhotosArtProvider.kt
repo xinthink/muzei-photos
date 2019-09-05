@@ -16,9 +16,6 @@
 
 package com.xinthink.muzei.photos
 
-import android.content.ContentUris
-import android.content.Intent
-import android.util.Log
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
@@ -57,19 +54,19 @@ class PhotosArtProvider : MuzeiArtProvider() {
         }
     }
 
-    override fun openArtworkInfo(artwork: Artwork): Boolean {
-        val uri = artwork.webUri ?: return false
-        val ctx = context ?: return false
-        return try {
-            ctx.startActivity(
-                Intent(Intent.ACTION_VIEW, uri)
-                    .addCategory(Intent.CATEGORY_BROWSABLE)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
-            true
-        } catch (e: Throwable) {
-            Log.w(TAG, "Could not open $uri, artwork=${ContentUris.withAppendedId(contentUri, artwork.id)}", e)
-            false
-        }
-    }
+    // override fun openArtworkInfo(artwork: Artwork): Boolean {
+    //     val uri = artwork.webUri ?: return false
+    //     val ctx = context ?: return false
+    //     return try {
+    //         ctx.startActivity(
+    //             Intent(Intent.ACTION_VIEW, uri)
+    //                 .addCategory(Intent.CATEGORY_BROWSABLE)
+    //                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    //         )
+    //         true
+    //     } catch (e: Throwable) {
+    //         Log.w(TAG, "Could not open $uri, artwork=${ContentUris.withAppendedId(contentUri, artwork.id)}", e)
+    //         false
+    //     }
+    // }
 }
