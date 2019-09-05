@@ -127,8 +127,12 @@ class AlbumsViewModel : ViewModel() {
     }
 
     /** Fetch Photos albums */
-    fun fetchAlbums(context: Context, isIncremental: Boolean = false) {
-        if (mLoading.value == true || (isIncremental && hasNoPageToken)) return
+    fun fetchAlbums(
+        context: Context,
+        isIncremental: Boolean = false,
+        force: Boolean = false
+    ) {
+        if (!force && (mLoading.value == true || (isIncremental && hasNoPageToken))) return
 
         if (!isIncremental) albumsPageToken = null // clear pagination when refreshing
         mLoading.value = true

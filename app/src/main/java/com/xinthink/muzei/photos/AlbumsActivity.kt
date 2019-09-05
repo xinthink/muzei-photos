@@ -144,7 +144,7 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
 
     private val onTokenUpdated = Observer<TokenInfo?> {
         if (isUnauthorized()) albumsAdapter.clearAlbums()
-        else viewModel.fetchAlbums(this)
+        else viewModel.fetchAlbums(this, force = true)
     }
 
     private val onAlbumsResult = Observer<AlbumsResult?> {
