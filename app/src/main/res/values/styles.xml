@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/accentColor</item>
+        <item name="android:textViewStyle">@style/DefaultTextView</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,5 +18,9 @@
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
         <item name="colorControlHighlight">@color/primaryColor</item>
         <item name="colorAccent">@color/highlight_blue</item>
+    </style>
+    
+    <style name="DefaultTextView" parent="android:Widget.TextView">
+        <item name="android:textDirection">locale</item>
     </style>
 </resources>
