@@ -8,7 +8,7 @@ object V {
     const val compileSdkVersion = 28
     const val targetSdkVersion = 28
     const val minSdkVersion = 19
-    const val androidPluginVersion = "3.4.1"
+    const val androidPluginVersion = "3.5.0"
 
     const val kotlinVersion = "1.3.41"
     const val ktStdlib = "stdlib-jdk7"
