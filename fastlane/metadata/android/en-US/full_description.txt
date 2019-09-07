@@ -1,0 +1,9 @@
+<b>Muzei - Photos album</b> is a plugin for <a href="https://play.google.com/store/apps/details?id=net.nurik.roman.muzei">Muzei</a>, which is an Android live wallpaper app, by Roman Nurik and Ian Lake.
+
+This plugin allow you to pick one <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.photos">Google Photos</a> album as a wallpaper source for the <a href="https://play.google.com/store/apps/details?id=net.nurik.roman.muzei">Muzei</a> app, so that your favorite photos can be displayed as wallpaper on both the home and the lock screen.
+
+In order to use this plugin, you will have to:<br/>
+- Install the <a href="https://play.google.com/store/apps/details?id=net.nurik.roman.muzei">Muzei</a> app first
+- Authorize the plugin to access your Google Photos library
+
+It's open-source: <a href="https://github.com/xinthink/muzei-photos">github.com/xinthink/muzei-photos</a>

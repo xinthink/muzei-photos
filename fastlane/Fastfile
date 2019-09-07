@@ -24,7 +24,7 @@ def upload_artifact(isAab: true, track: "internal", rollout: "1.0")
     rollout: rollout,
     skip_upload_apk: isAab,
     skip_upload_aab: !isAab,
-    skip_upload_metadata: true,
+    skip_upload_metadata: false,
     skip_upload_images: true,
     skip_upload_screenshots: true,
     timeout: 600,

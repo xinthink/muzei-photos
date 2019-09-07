@@ -16,4 +16,4 @@ test_output
 api*.json
 
 # App metadata on Google Play/App Store
-metadata
+# metadata
