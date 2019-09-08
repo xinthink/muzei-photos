@@ -16,18 +16,27 @@
 
 package com.xinthink.muzei.photos
 
+import android.util.Log
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
+import com.xinthink.muzei.photos.TokenService.Companion.loadToken
 import com.xinthink.muzei.photos.worker.R
 
 class PhotosArtProvider : MuzeiArtProvider() {
 
     companion object {
-        private const val TAG = "MZPProvider"
+        private const val TAG = "MZProvider"
 
         private const val COMMAND_ID_SETTINGS = 1
         private const val COMMAND_ID_PRUNE = 2
+    }
+
+    override fun onCreate(): Boolean {
+        super.onCreate()
+        Log.d(TAG, "PhotosArtProvider.onCreate, context=${context != null}")
+        context?.loadToken()
+        return true
     }
 
     override fun onLoadRequested(initial: Boolean) {
