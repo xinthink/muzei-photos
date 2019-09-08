@@ -19,7 +19,8 @@ default_platform(:android)
 # Upload the artifact (default: .aab) to Google Play
 def upload_artifact(isAab: true, track: "internal", rollout: "1.0")
   upload_to_play_store(
-    aab: "app/build/outputs/#{isAab ? 'bundle' : 'apk'}/release/app#{isAab ? '.aab' : '-release.apk'}",
+    # aab: "app/build/outputs/bundle/release/app.aab",
+    # apk: "app/build/outputs/apk/release/app-release.apk",
     track: track,
     rollout: rollout,
     skip_upload_apk: isAab,
