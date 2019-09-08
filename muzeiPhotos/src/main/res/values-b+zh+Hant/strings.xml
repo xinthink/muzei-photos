@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_settings">設定</string>
+    <string name="menu_prune">清空已下載相片</string>
+    <string name="description">您Google相簿中的相片</string>
+    <string name="default_photo_desc">Google相簿中的相片</string>
+    <string name="name">相簿</string>
+</resources>

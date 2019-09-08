@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Muzei - 相簿</string>
+    <string name="action_settings">設定</string>
+    <string name="title_settings">設定</string>
+    <plurals name="items_in_album">
+        <item quantity="other">%d 個項目</item>
+    </plurals>
+    <string name="header_currently_set">當前設定</string>
+    <string name="btn_authorize">授權</string>
+    <string name="msg_authorization_request">為了將您的相片設定為壁紙，請授權app訪問您的相簿</string>
+    <string name="msg_loading_album">相簿載入中，請稍候…</string>
+    <string name="msg_pick_one_album">馬上就好，請在以下相簿中選擇一個作為壁紙庫。</string>
+</resources>

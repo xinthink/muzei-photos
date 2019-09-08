@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Muzei - 影集</string>
+    <string name="action_settings">设置</string>
+    <string name="title_settings">设置</string>
+    <plurals name="items_in_album">
+        <item quantity="other">%d 项</item>
+    </plurals>
+    <string name="header_currently_set">当前设定</string>
+    <string name="btn_authorize">授权</string>
+    <string name="msg_authorization_request">为了将您的照片设定为壁纸，请授权app访问您的影集</string>
+    <string name="msg_loading_album">影集加载中，请稍候…</string>
+    <string name="msg_pick_one_album">马上就好，请在以下影集中选择一个作为壁纸库。</string>
+</resources>
