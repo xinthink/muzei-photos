@@ -284,7 +284,7 @@ private class SummaryUI(context: Context) {
                 setLineSpacing(0f, 1.2f)
                 textColorResource = R.color.secondaryTextColor
                 textSize = 16f
-            }.lparams(width = matchParent) {
+            }.lparams {
                 gravity = Gravity.CENTER
             }
 
