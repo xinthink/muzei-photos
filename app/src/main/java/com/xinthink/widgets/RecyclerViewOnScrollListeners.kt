@@ -66,7 +66,7 @@ class LinearRecyclerOnScrollListener(
 
     override fun findFirstVisibleItemPosition() = layoutManager.findFirstVisibleItemPosition()
 
-    override fun findLastCompletelyVisibleItemPosition() = layoutManager.findLastCompletelyVisibleItemPosition()
+    override fun findLastCompletelyVisibleItemPosition() = layoutManager.findLastVisibleItemPosition()
 }
 
 /**
