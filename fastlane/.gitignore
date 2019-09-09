@@ -17,3 +17,7 @@ api*.json
 
 # App metadata on Google Play/App Store
 # metadata
+
+
+# Default changelogs
+# Bug fixes and performance improvements.
