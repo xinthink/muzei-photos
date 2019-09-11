@@ -159,7 +159,10 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
     }
 
     private fun loadMore() {
-        if (!isUnauthorized()) viewModel.fetchAlbums(this, isIncremental = true)
+        if (!isUnauthorized()) loadingIndicator.post {
+            // run following code outside the scroll callback
+            viewModel.fetchAlbums(this, isIncremental = true)
+        }
     }
 
     /** update data of current selected album */
