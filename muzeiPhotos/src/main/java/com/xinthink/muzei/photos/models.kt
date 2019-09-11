@@ -1,12 +1,13 @@
 package com.xinthink.muzei.photos
 
 import android.annotation.SuppressLint
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 /** Google Photos authorization info */
-data class TokenInfo(
+@Keep data class TokenInfo(
     @field:Json(name = "access_token")
     val accessToken: String = "",
 
@@ -42,7 +43,7 @@ data class TokenInfo(
     }
 }
 
-data class Album(
+@Keep data class Album(
     val id: String,
     val title: String = "",
 
@@ -89,7 +90,7 @@ data class MediaItemsPagination(
 /**
  * Representation of a media item (such as a photo or video) in Google Photos.
  */
-data class MediaItem(
+@Keep data class MediaItem(
     val id: String,
 
     /** Description of the media item. This is shown to the user in the item's info section in the Google Photos app. */
@@ -124,7 +125,7 @@ data class MediaItem(
 /**
  * Metadata for a media item.
  */
-data class MediaMetadata(
+@Keep data class MediaMetadata(
     /**
      * Time when the media item was first created (not when it was uploaded to Google Photos).
      * A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".
@@ -160,7 +161,7 @@ data class MediaMetadata(
 /**
  * Information about the user who added the media item. Note that this information is included only if the media item is within a shared album created by your app and you have the sharing scope.
  */
-data class Contributor(
+@Keep data class Contributor(
     val profilePictureBaseUrl: String,
     val displayName: String
 )

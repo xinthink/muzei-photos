@@ -21,6 +21,25 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# Understand the @Keep support annotation.
+-keep class androidx.annotation.Keep
+
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+#-keep class com.xinthink.muzei.photos.** { *; }
+
 # OkHttp / Picasso
 # JSR 305 annotations are for embedding nullability information.
 -dontwarn javax.annotation.**
