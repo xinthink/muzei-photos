@@ -5,4 +5,8 @@
     <string name="description">您Google相簿中的相片</string>
     <string name="default_photo_desc">Google相簿中的相片</string>
     <string name="name">相簿</string>
+    <string name="channel_navigation">重定向</string>
+    <string name="channel_navigation_desc">重定向至原始Google Photos頁面</string>
+    <string name="push_text_photo">點擊重定向至原始Google Photos頁面</string>
+    <string name="push_title_photo">相片詳情</string>
 </resources>

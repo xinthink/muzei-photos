@@ -5,4 +5,8 @@
     <string name="default_photo_desc">From Google Photos album</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_prune">Clear Downloaded Photos</string>
+    <string name="channel_navigation">Navigation</string>
+    <string name="channel_navigation_desc">Navigation to original Google Photos pages</string>
+    <string name="push_title_photo">Original Photo</string>
+    <string name="push_text_photo">Click to open the original Google Photos page</string>
 </resources>

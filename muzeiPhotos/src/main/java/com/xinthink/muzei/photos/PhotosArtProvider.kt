@@ -16,11 +16,17 @@
 
 package com.xinthink.muzei.photos
 
+import android.app.PendingIntent
+import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.apps.muzei.api.UserCommand
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import com.xinthink.muzei.photos.TokenService.Companion.loadToken
+import com.xinthink.muzei.photos.worker.BuildConfig
 import com.xinthink.muzei.photos.worker.R
 
 class PhotosArtProvider : MuzeiArtProvider() {
@@ -34,7 +40,7 @@ class PhotosArtProvider : MuzeiArtProvider() {
 
     override fun onCreate(): Boolean {
         super.onCreate()
-        Log.d(TAG, "PhotosArtProvider.onCreate, context=${context != null}")
+        if (BuildConfig.DEBUG) Log.d(TAG, "PhotosArtProvider.onCreate, context=${context != null}")
         context?.loadToken()
         return true
     }
@@ -63,19 +69,31 @@ class PhotosArtProvider : MuzeiArtProvider() {
         }
     }
 
-    // override fun openArtworkInfo(artwork: Artwork): Boolean {
-    //     val uri = artwork.webUri ?: return false
-    //     val ctx = context ?: return false
-    //     return try {
-    //         ctx.startActivity(
-    //             Intent(Intent.ACTION_VIEW, uri)
-    //                 .addCategory(Intent.CATEGORY_BROWSABLE)
-    //                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    //         )
-    //         true
-    //     } catch (e: Throwable) {
-    //         Log.w(TAG, "Could not open $uri, artwork=${ContentUris.withAppendedId(contentUri, artwork.id)}", e)
-    //         false
-    //     }
-    // }
+    override fun openArtworkInfo(artwork: Artwork): Boolean {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return super.openArtworkInfo(artwork)
+
+        // workaround to restrictions on starting activities from the background
+        // see https://developer.android.com/guide/components/activities/background-starts
+        val uri = artwork.webUri ?: return false
+        val ctx = context ?: return false
+        val pendingIntent = PendingIntent.getActivity(
+            ctx, 0,
+            Intent(Intent.ACTION_VIEW, uri)
+                .addCategory(Intent.CATEGORY_BROWSABLE)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val notification =
+            NotificationCompat.Builder(ctx, CHANNEL_NAVIGATION)
+                .setSmallIcon(R.mipmap.ic_notification)
+                .setContentTitle(ctx.getString(R.string.push_title_photo))
+                .setContentText(ctx.getString(R.string.push_text_photo))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_NAVIGATION)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build()
+        NotificationManagerCompat.from(ctx).notify(0, notification)
+        return true
+    }
 }
