@@ -7,7 +7,7 @@
     <color name="secondaryColor">#455a64</color>
     <color name="secondaryLightColor">#718792</color>
     <color name="secondaryDarkColor">#1c313a</color>
-    <color name="accentColor">@color/primaryLightColor</color>
+    <color name="accentColor">@color/secondaryLightColor</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#b0000000</color>
     <color name="hintTextColor">#80000000</color>
