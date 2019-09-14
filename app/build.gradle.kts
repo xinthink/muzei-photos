@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-android-extensions")
+    id("io.fabric")
 }
 
 android {
@@ -72,6 +73,9 @@ dependencies {
     implementation(picasso)
     implementation(picassoTransformations)
 
+    // Firebase
+    implementation(crashlytics)
+
     // google sign-in & photos authorization
     implementation(gmsAuth)
 
@@ -79,4 +83,8 @@ dependencies {
     testImplementation(junit)
     androidTestImplementation(testRunner)
     androidTestImplementation(espressoCore)
+}
+
+apply {
+    plugin("com.google.gms.google-services")
 }

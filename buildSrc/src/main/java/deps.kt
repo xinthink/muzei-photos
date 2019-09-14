@@ -1,5 +1,7 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.kotlin
+import java.net.URI
 
 /**
  * Dependency versions
@@ -14,6 +16,12 @@ object V {
     const val ktStdlib = "stdlib-jdk7"
     const val coroutinesVersion = "1.3.0-RC2"
     const val ankoVersion = "0.10.8"
+
+    // Firebase
+    const val googleServicesPluginVersion = "4.3.2"
+    const val fabricPluginVersion = "1.31.0"
+    const val firebaseAnalyticsVersion = "17.2.0"
+    const val crashlyticsVersion = "2.10.1"
 
     const val appCompatVersion = "1.1.0-rc01"
     const val browserVersion = "1.0.0"
@@ -43,9 +51,22 @@ object V {
 val DependencyHandler.androidPlugin get() = "com.android.tools.build:gradle:${V.androidPluginVersion}"
 val DependencyHandler.kotlinPlugin get() = "org.jetbrains.kotlin:kotlin-gradle-plugin:${V.kotlinVersion}"
 val DependencyHandler.ktlint get() = "com.pinterest:ktlint:${V.ktlintVersion}"
+val DependencyHandler.googleServices get() = "com.google.gms:google-services:${V.googleServicesPluginVersion}"
+val DependencyHandler.fabricPlugin get() = "io.fabric.tools:gradle:${V.fabricPluginVersion}"
 
+val RepositoryHandler.fabricPublic get() = maven {
+    url = URI.create("https://maven.fabric.io/public")
+    @Suppress("UnstableApiUsage")
+    content {
+        includeGroup("io.fabric.tools")
+    }
+}
 
-/** Kotlin dependency with default stdlib module */
+// Firebase dependencies
+val DependencyHandler.firebaseAnalytics get() = "com.google.firebase:firebase-analytics:${V.firebaseAnalyticsVersion}"
+val DependencyHandler.crashlytics get() = "com.crashlytics.sdk.android:crashlytics:${V.crashlyticsVersion}"
+
+// kotlin/anko dependencies
 val DependencyHandler.kt get() = kotlin(V.ktStdlib, V.kotlinVersion)
 val DependencyHandler.coroutinesCore get() = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${V.coroutinesVersion}"
 val DependencyHandler.coroutinesAndroid get() = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${V.coroutinesVersion}"
