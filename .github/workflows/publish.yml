@@ -23,6 +23,7 @@ jobs:
     - name: setup properties & keys
       run: |
         echo "${{ secrets.GoogleApiKeys }}" > muzeiPhotos/googleapi.properties
+        echo "${{ secrets.GoogleServicesConfig }}" | base64 --decode > app/google-services.json
         echo -e "store=upload_key.jks\nalias=upload\npass=${{ secrets.JKS_PASS }}\nstorePass=${{ secrets.JKS_PASS }}" > app/keystore.properties
         echo -e "sdk.dir=$ANDROID_HOME\nkeystore.props.file=keystore.properties" > local.properties
         echo "${{ secrets.jsonKeyBase64 }}" | base64 --decode > play-dev-xinthink-3e418a168938.json
