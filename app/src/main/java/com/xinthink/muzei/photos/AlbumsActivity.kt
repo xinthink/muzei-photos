@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -148,13 +149,20 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
     }
 
     private val onAlbumsResult = Observer<AlbumsResult?> {
-        when (it) {
-            is AlbumsPagination -> {
-                (if (it.isIncremental) albumsAdapter::appendAlbums else albumsAdapter::resetAlbums)(it.albums)
-                updateSelectedAlbumInfo(it)
+        try {
+            when (it) {
+                is AlbumsPagination -> {
+                    val handler = if (it.isIncremental) albumsAdapter::appendAlbums
+                    else albumsAdapter::resetAlbums
+                    handler(it.albums)
+                    updateSelectedAlbumInfo(it)
+                }
+                is AlbumsFailure -> toast("Fetching albums failed: ${it.error}")
+                else -> Unit
             }
-            is AlbumsFailure -> toast("Fetching albums failed: ${it.error}")
-            else -> Unit
+        } catch (e: Exception) {
+            // FIXME crashes workaround: https://is.gd/VomkBY https://is.gd/3OWuSZ
+            Crashlytics.logException(e)
         }
     }
 
