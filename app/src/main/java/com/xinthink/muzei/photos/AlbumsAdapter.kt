@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
 import androidx.recyclerview.widget.RecyclerView
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -192,9 +191,6 @@ private class SummaryRenderer(
         ui.icRefresh.onClick {
             callback.refreshAlbums()
         }
-        if (BuildConfig.DEBUG) ui.icCrash.onClick {
-            Crashlytics.getInstance().crash()
-        }
     }
 
     private fun renderAccount(account: GoogleSignInAccount) {
@@ -276,7 +272,6 @@ private class SummaryUI(context: Context) {
     lateinit var txtSubtitle: TextView
     lateinit var txtMsg: TextView
     lateinit var icRefresh: View
-    lateinit var icCrash: View
 
     private fun _FrameLayout.unauthorizedView(): Pair<View, View> {
         lateinit var btnAuth: TextView
@@ -349,11 +344,8 @@ private class SummaryUI(context: Context) {
             setTintCompat(R.color.sys_icon_color)
         }
 
-        // force crash for testing
-        icCrash = imageViewCompat(R.drawable.ic_bug_report_red_24dp) {
-            id = R.id.ic_crash
-            visible = BuildConfig.DEBUG
-        }
+        // add a force-crash icon if debugging
+        addCrashIcon()
 
         applyConstraintSet {
             imgAvatar {
@@ -405,12 +397,7 @@ private class SummaryUI(context: Context) {
                     TOP to TOP of PARENT_ID
                 )
             }
-            icCrash {
-                connect(
-                    END to START of icRefresh margin dip(2),
-                    TOP to TOP of icRefresh
-                )
-            }
+            layoutCrashIcon(icRefresh)
         }
     }.lparams(width = matchParent)
 
