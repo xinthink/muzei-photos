@@ -1,5 +1,4 @@
-# Jekyll for Github
-Gemfile*
 _site
 .jekyll*
 .*-cache
+vendor

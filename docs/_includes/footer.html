@@ -1,0 +1,30 @@
+<footer class="site-footer h-card">
+  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <ul class="contact-list">
+          <li>
+              <a href="https://github.com/xinthink/muzei-photos">GitHub</a> |
+              <a href="/privacy">Privacy</a> |
+              <a href="/terms">Terms</a>
+          </li>
+          <li class="p-name">
+            {%- if site.author -%}
+              © {{ site.time | date: "%Y" }} {{ site.author | escape }}
+            {%- else -%}
+              {{ site.title | escape }}
+            {%- endif -%}
+            <span>. Powered by <a href="https://pages.github.com">GitHub</a> + <a href="https://jekyllrb.com">Jekyll</a></span>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>

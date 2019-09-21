@@ -16,6 +16,6 @@ This's a plugin for [Muzei], displays photos from your [Google Photos] as wallpa
 [license-badge]: https://img.shields.io/github/license/xinthink/muzei-photos
 [license]: https://raw.githubusercontent.com/xinthink/muzei-photos/master/LICENSE
 [play-badge]: https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png
-[play-link]: https://play.google.com/store/apps/details?id=com.xinthink.muzei.photos&pcampaignid=github
+[play-link]: https://play.google.com/store/apps/details?id=com.xinthink.muzei.photos&utm_source=github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1
 [Google Photos]: https://www.google.com/photos/about/
 [Muzei]: http://muzei.co/
