@@ -1,8 +1,8 @@
 ---
-permalink: /privacy
+title: Privacy Policy
 layout: page
+permalink: /privacy
 ---
-## Privacy Policy
 
 xinthink built the Muzei - Photos album app as an Open Source app. This SERVICE is provided by xinthink at no cost and is intended for use as is.
 
