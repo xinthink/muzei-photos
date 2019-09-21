@@ -27,10 +27,12 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: https://mzp.xinthink.com
 twitter_username: yingxinwu
 github_username: xinthink
+logo: /assets/img/logo.jpg
 
 # Build settings
 theme: minima
 plugins:
+  - jekyll-seo-tag
   - jekyll-feed
 
 # Exclude from processing.

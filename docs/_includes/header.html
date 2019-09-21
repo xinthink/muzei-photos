@@ -1,6 +1,11 @@
 <header class="site-header" role="banner">
 
   <div class="wrapper">
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+      {%- if site.logo -%}
+        <img class="logo" src="{{ site.logo }}" />
+      {%- endif -%}
+      {{ site.title | escape }}
+    </a>
   </div>
 </header>
