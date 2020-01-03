@@ -1,9 +1,12 @@
 *.iml
+*.ipr
+*.iws
 **/.idea/.name
 **/.idea/assetWizardSettings.xml
 **/.idea/caches
 # .idea/dictionaries
 **/.idea/gradle.xml
+**/.idea/jarRepositories.xml
 **/.idea/jsLibraryMappings.xml
 **/.idea/libraries
 **/.idea/misc.xml
