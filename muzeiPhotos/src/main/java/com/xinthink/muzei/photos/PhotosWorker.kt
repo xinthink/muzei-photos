@@ -35,6 +35,7 @@ import com.xinthink.muzei.photos.worker.R
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.IOException
 
+/** A background worker to download photos */
 class PhotosWorker(
     context: Context,
     workerParams: WorkerParameters
@@ -43,9 +44,10 @@ class PhotosWorker(
     companion object {
         private const val TAG = "MZPWorker"
 
-        fun enqueueLoad(initial: Boolean) {
+        /** Schedule a photos-download background job */
+        fun Context.enqueueLoad(initial: Boolean) {
             if (BuildConfig.DEBUG) Log.d(TAG, "enqueueLoad initial=$initial")
-            val workManager = WorkManager.getInstance()
+            val workManager = WorkManager.getInstance(this)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<PhotosWorker>()
                     .setConstraints(Constraints.Builder()
