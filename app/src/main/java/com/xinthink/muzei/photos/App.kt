@@ -1,30 +1,34 @@
 package com.xinthink.muzei.photos
 
 import android.app.Application
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        updateDarkMode(defaultSharedPrefs.getString("prefTheme", null))
+    }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            // workaround to restrictions on starting activities from the background
-            // see https://developer.android.com/guide/components/activities/background-starts
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-                .createNotificationChannel(
-                    NotificationChannel(
-                        CHANNEL_NAVIGATION,
-                        resources?.getString(R.string.channel_navigation) ?: "Navigation",
-                        NotificationManager.IMPORTANCE_HIGH
-                    ).apply {
-                        description = resources?.getString(R.string.channel_navigation_desc)
-                            ?: "Navigation to original Google Photos pages"
-                        setShowBadge(false)
-                        lockscreenVisibility = Notification.VISIBILITY_SECRET
-                    })
+    companion object {
+        val Context.defaultSharedPrefs: SharedPreferences
+            get() = PreferenceManager.getDefaultSharedPreferences(this)
+
+        /** Update dark mode according to user preferences */
+        fun Context.updateDarkMode(theme: CharSequence?) {
+            if (resources == null) return
+
+            AppCompatDelegate.setDefaultNightMode(
+                when (theme) {
+                    "1" -> AppCompatDelegate.MODE_NIGHT_NO
+                    "2" -> AppCompatDelegate.MODE_NIGHT_YES
+                    else -> if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P)
+                        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                }
+            )
         }
     }
 }

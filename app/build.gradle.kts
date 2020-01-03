@@ -26,7 +26,7 @@ android {
             loadProperties(keyFile)
             val store = findProperty("store")
             if (store != null && file(store).exists()) {
-                println("keystore for release builds: $store")
+                // println("keystore for release builds: $store")
                 register("release") {
                     storeFile = file(store)
                     keyAlias = findProperty("alias") as String?

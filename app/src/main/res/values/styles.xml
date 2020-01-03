@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/accentColor</item>
         <item name="android:colorBackground">@color/primaryColor</item>
         <item name="android:textViewStyle">@style/DefaultTextView</item>
+        <item name="alertDialogTheme">@style/AppTheme.DefaultDialog</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,5 +24,10 @@
     
     <style name="DefaultTextView" parent="android:Widget.TextView">
         <item name="android:textDirection">locale</item>
+    </style>
+
+    <style name="AppTheme.DefaultDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/accentColor</item>
+        <item name="colorAccent">@color/accentColor</item>
     </style>
 </resources>
