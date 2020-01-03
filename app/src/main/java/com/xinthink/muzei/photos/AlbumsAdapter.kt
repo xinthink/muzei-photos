@@ -159,6 +159,9 @@ class AlbumsAdapter(
 
         /** Refresh album list */
         fun refreshAlbums()
+
+        /** Go to the preferences screen */
+        fun openPreferences()
     }
 }
 
@@ -190,6 +193,9 @@ private class SummaryRenderer(
         renderAccount(account!!) // account is non-null here
         ui.icRefresh.onClick {
             callback.refreshAlbums()
+        }
+        ui.icPrefs.onClick {
+            callback.openPreferences()
         }
     }
 
@@ -272,6 +278,7 @@ private class SummaryUI(context: Context) {
     lateinit var txtSubtitle: TextView
     lateinit var txtMsg: TextView
     lateinit var icRefresh: View
+    lateinit var icPrefs: View
 
     private fun _FrameLayout.unauthorizedView(): Pair<View, View> {
         lateinit var btnAuth: TextView
@@ -344,6 +351,12 @@ private class SummaryUI(context: Context) {
             setTintCompat(R.color.sys_icon_color)
         }
 
+        // preferences icon
+        icPrefs = imageViewCompat(R.drawable.ic_settings_black_24dp) {
+            id = R.id.ic_prefs
+            setTintCompat(R.color.sys_icon_color)
+        }
+
         // add a force-crash icon if debugging
         addCrashIcon()
 
@@ -392,6 +405,12 @@ private class SummaryUI(context: Context) {
                 )
             }
             icRefresh {
+                connect(
+                    END to START of icPrefs margin icRefresh.dip(2),
+                    TOP to TOP of icPrefs
+                )
+            }
+            icPrefs {
                 connect(
                     END to END of PARENT_ID,
                     TOP to TOP of PARENT_ID

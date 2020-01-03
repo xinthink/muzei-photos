@@ -27,6 +27,7 @@ import org.jetbrains.anko.horizontalPadding
 import org.jetbrains.anko.horizontalProgressBar
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 /**
@@ -92,6 +93,10 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
     override fun isUnauthorized(): Boolean = viewModel.isUnauthorized
 
     override fun refreshAlbums() = onTokenUpdated.onChanged(null)
+
+    override fun openPreferences() {
+        startActivity<SettingsActivity>()
+    }
 
     private fun initRecyclerView(rv: RecyclerView) {
         albumsAdapter = AlbumsAdapter(this)

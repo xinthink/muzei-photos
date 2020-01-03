@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="android:colorBackground">@color/primaryColor</item>
+        <item name="android:textViewStyle">@style/DefaultTextView</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=CFD8DC -->
 <resources>
-    <color name="primaryColor">#cfd8dc</color>
+    <color name="primaryColor">#ffffff</color>
     <color name="primaryLightColor">#ffffff</color>
-    <color name="primaryDarkColor">#9ea7aa</color>
+    <color name="primaryDarkColor">@color/primaryColor</color>
     <color name="secondaryColor">#455a64</color>
     <color name="secondaryLightColor">#718792</color>
     <color name="secondaryDarkColor">#1c313a</color>
@@ -22,8 +22,8 @@
     <color name="mask_white_10">#1affffff</color>
     <color name="mask_white_5">#0cffffff</color>
     <color name="sys_icon_color">#656368</color>
-    <color name="album_cover_bg">@color/primaryColor</color>
+    <color name="album_cover_bg">#cfd8dc</color>
     <color name="album_cover_mask">@color/mask_black_5</color>
     <color name="check_icon">#ffffff</color>
-    <color name="check_icon_bg">@color/primaryDarkColor</color>
+    <color name="check_icon_bg">#9ea7aa</color>
 </resources>

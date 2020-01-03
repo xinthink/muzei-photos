@@ -8,6 +8,7 @@
     <item name="ic_check" type="id" />
     <item name="ic_refresh" type="id" />
     <item name="ic_crash" type="id" />
+    <item name="ic_prefs" type="id" />
     <item name="txt_album_title" type="id" />
     <item name="txt_album_items" type="id" />
     <item name="txt_summary_header" type="id" />
