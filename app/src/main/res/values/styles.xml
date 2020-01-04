@@ -20,6 +20,7 @@
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
         <item name="colorControlHighlight">@color/primaryColor</item>
         <item name="colorAccent">@color/highlight_blue</item>
+        <item name="android:textSize">16sp</item>
     </style>
     
     <style name="DefaultTextView" parent="android:Widget.TextView">
