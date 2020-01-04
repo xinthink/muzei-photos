@@ -8,7 +8,16 @@
     </plurals>
     <string name="header_currently_set">當前設定</string>
     <string name="btn_authorize">授權</string>
-    <string name="msg_authorization_request">為了將您的相片設定為壁紙，請授權app訪問您的相簿</string>
+    <string name="msg_authorization_request">為了將您的相片設定為桌布，請授權app訪問您的相簿</string>
     <string name="msg_loading_album">相簿載入中，請稍候…</string>
-    <string name="msg_pick_one_album">馬上就好，請在以下相簿中選擇一個作為壁紙庫。</string>
+    <string name="msg_pick_one_album">馬上就好，請在以下相簿中選擇一個作為桌布來源。</string>
+
+    <string-array name="pref_themes">
+        <item>淺色</item>
+        <item>深色</item>
+        <item>根據「省電模式」而設定</item>
+    </string-array>
+    <string name="pref_choose_theme">選擇主題背景</string>
+    <string name="pref_theme">主題背景</string>
+    <string name="pref_group_display">顯示</string>
 </resources>

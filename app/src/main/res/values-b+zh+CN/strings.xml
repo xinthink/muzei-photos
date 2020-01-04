@@ -11,4 +11,13 @@
     <string name="msg_authorization_request">为了将您的照片设定为壁纸，请授权app访问您的影集</string>
     <string name="msg_loading_album">影集加载中，请稍候…</string>
     <string name="msg_pick_one_album">马上就好，请在以下影集中选择一个作为壁纸库。</string>
+
+    <string-array name="pref_themes">
+        <item>浅色</item>
+        <item>深色</item>
+        <item>由省电模式设置</item>
+    </string-array>
+    <string name="pref_choose_theme">选择主题</string>
+    <string name="pref_theme">主题</string>
+    <string name="pref_group_display">显示</string>
 </resources>
