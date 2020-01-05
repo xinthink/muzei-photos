@@ -223,6 +223,7 @@ private class SummaryRenderer(
             ui.imgTag.setTintCompat(R.color.mask_black_30)
             ui.imgStar.setTintCompat(R.color.golden)
         } else {
+            ui.imgCover.setImageDrawable(null)
             ui.imgCover.backgroundResource = R.drawable.selected_album_placeholder_border
             ui.imgTag.setTintCompat(R.color.accentColor_white50)
             ui.imgStar.setTintCompat(R.color.star_placeholder_color)

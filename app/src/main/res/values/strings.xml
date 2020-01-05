@@ -13,6 +13,9 @@
     <string name="msg_loading_album">Loading albums, just a second…</string>
     <string name="msg_pick_one_album">One last step, pick one of the albums below as the wallpaper source.</string>
 
+    <string name="dlg_title_switch_account">Switch Google account</string>
+    <string name="dlg_msg_switch_account">Are you sure to switch to another Google account? The current account will be logged out.</string>
+
     <string-array name="pref_themes">
         <item>Light</item>
         <item>Dark</item>
@@ -21,4 +24,6 @@
     <string name="pref_choose_theme">Choose theme</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_group_display">Display</string>
+    <string name="pref_group_account">Account</string>
+    <string name="pref_switch_account">Switch Google account</string>
 </resources>

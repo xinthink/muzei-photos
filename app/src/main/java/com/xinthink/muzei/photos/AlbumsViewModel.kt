@@ -129,4 +129,12 @@ class AlbumsViewModel : ViewModel() {
             }
         }
     }
+
+    /** Clear account & album data for the current session */
+    fun clearCurrentSession(context: Context) {
+        context.clearAlbumAndPageTokens()
+        mAccount.value = null
+        mSelectedAlbum.value = null
+        mAlbums.value = AlbumsPagination(emptyList(), nextPageToken = "")
+    }
 }

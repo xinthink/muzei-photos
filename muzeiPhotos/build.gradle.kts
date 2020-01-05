@@ -36,9 +36,9 @@ dependencies {
     api(appCompat)
     api(coreKtx)
     api(preference)
+    api(ankoCommons)
 
     implementation(muzeiApi)
-    implementation(ankoCommons)
     implementation(workRuntime)
     implementation(retrofit)
     implementation(retrofitMoshi)

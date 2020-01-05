@@ -16,6 +16,7 @@
             android:name=".AlbumsActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             />
         <activity
             android:name=".SettingsActivity"

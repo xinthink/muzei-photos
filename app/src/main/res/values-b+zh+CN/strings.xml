@@ -12,6 +12,9 @@
     <string name="msg_loading_album">影集加载中，请稍候…</string>
     <string name="msg_pick_one_album">马上就好，请在以下影集中选择一个作为壁纸库。</string>
 
+    <string name="dlg_title_switch_account">更换Google账号</string>
+    <string name="dlg_msg_switch_account">您确定要切换到另一个Google帐户吗？当前帐户将被登出。</string>
+
     <string-array name="pref_themes">
         <item>浅色</item>
         <item>深色</item>
@@ -20,4 +23,6 @@
     <string name="pref_choose_theme">选择主题</string>
     <string name="pref_theme">主题</string>
     <string name="pref_group_display">显示</string>
+    <string name="pref_group_account">账号</string>
+    <string name="pref_switch_account">更换Google账号</string>
 </resources>

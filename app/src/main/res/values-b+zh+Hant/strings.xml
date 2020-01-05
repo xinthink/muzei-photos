@@ -12,6 +12,9 @@
     <string name="msg_loading_album">相簿載入中，請稍候…</string>
     <string name="msg_pick_one_album">馬上就好，請在以下相簿中選擇一個作為桌布來源。</string>
 
+    <string name="dlg_title_switch_account">更換Google帳戶</string>
+    <string name="dlg_msg_switch_account">您確定要登入另一個Google帳戶嗎？當前帳戶將被登出。</string>
+
     <string-array name="pref_themes">
         <item>淺色</item>
         <item>深色</item>
@@ -20,4 +23,6 @@
     <string name="pref_choose_theme">選擇主題背景</string>
     <string name="pref_theme">主題背景</string>
     <string name="pref_group_display">顯示</string>
+    <string name="pref_group_account">帳戶</string>
+    <string name="pref_switch_account">更換Google帳戶</string>
 </resources>
