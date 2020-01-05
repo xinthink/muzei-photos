@@ -3,7 +3,6 @@ package com.xinthink.muzei.photos
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +16,6 @@ import com.xinthink.muzei.photos.TokenInfo.Companion.isValid
 import com.xinthink.muzei.photos.TokenService.Companion.exchangeAccessToken
 import com.xinthink.muzei.photos.TokenService.Companion.loadToken
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.toast
 
 private const val TAG = "MZPAlbVM"
@@ -56,38 +54,20 @@ class AlbumsViewModel : ViewModel() {
     }
 
     /** Restore authorization info */
-    fun loadAuthorization(context: Context?) {
+    private fun loadAuthorization(context: Context?) {
         mAccount.value = GoogleSignIn.getLastSignedInAccount(context)
         mToken.value = context?.loadToken()
         if (BuildConfig.DEBUG) Log.d(TAG, "restored token from storage: ${mToken.value}")
     }
 
     /** Restore saved data about selected album */
-    fun loadSelectedAlbumInfo(context: Context) {
-        mSelectedAlbum.value = context.defaultSharedPreferences.run {
-            val id = getString("selected_album_id", null) ?: return@run null
-
-            Album(
-                id = id,
-                title = getString("selected_album_title", "") ?: "",
-                coverPhotoBaseUrl = getString("selected_album_coverPhotoBaseUrl", "") ?: "",
-                mediaItemsCount = getInt("selected_album_mediaItemsCount", -1)
-            )
-        }
+    private fun loadSelectedAlbumInfo(context: Context) {
+        mSelectedAlbum.value = context.loadSelectedAlbum()
     }
 
     /** Save data about selected album */
     fun saveSelectedAlbumInfo(context: Context, album: Album) {
-        context.defaultSharedPreferences.edit {
-            putString("selected_album_id", album.id)
-            putString("selected_album_title", album.title)
-            putString("selected_album_coverPhotoBaseUrl", album.coverPhotoBaseUrl)
-            putInt("selected_album_mediaItemsCount", album.mediaItemsCount)
-        }
-        context.pageTokenPrefs.edit {
-            putString("photos_page_token_${album.id}", null)
-        }
-        mSelectedAlbum.value = album
+        mSelectedAlbum.value = context.saveSelectedAlbum(album)
     }
 
     fun handleSignInResult(context: Context, resultCode: Int, completedTask: Task<GoogleSignInAccount>) {

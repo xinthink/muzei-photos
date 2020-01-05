@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -28,16 +26,17 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        this as KotlinJvmOptions
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation(kt)
-    implementation(coroutinesAndroid)
-    implementation(appCompat)
-    implementation(coreKtx)
+    api(kt)
+    api(coroutinesAndroid)
+    api(appCompat)
+    api(coreKtx)
+    api(preference)
+
     implementation(muzeiApi)
     implementation(ankoCommons)
     implementation(workRuntime)

@@ -2,10 +2,8 @@ package com.xinthink.muzei.photos
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.edit
 import com.xinthink.muzei.photos.worker.BuildConfig
 import okhttp3.OkHttpClient
-import org.jetbrains.anko.defaultSharedPreferences
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -65,25 +63,9 @@ interface TokenService {
             .create()
 
         /** Restore saved token */
-        fun Context.loadToken(): TokenInfo = defaultSharedPreferences.run {
-            mTokenInfo = TokenInfo(
-                accessToken = getString("auth_access_token", "") ?: "",
-                refreshToken = getString("auth_refresh_token", "") ?: "",
-                expiresIn = getLong("auth_token_expires_in", 0),
-                mExpiresAt = getLong("auth_token_expires_at", 0)
-            )
-            mTokenInfo
-        }
-
-        private fun Context.saveToken(token: TokenInfo) {
-            mTokenInfo = token
-            defaultSharedPreferences.edit {
-                token.computeExpiresAt() // compute expires before persisting
-                putString("auth_access_token", token.accessToken)
-                putString("auth_refresh_token", token.refreshToken)
-                putLong("auth_token_expires_in", token.expiresIn)
-                putLong("auth_token_expires_at", token.expiresAt)
-            }
+        fun Context.loadToken(): TokenInfo {
+            mTokenInfo = loadSavedToken()
+            return mTokenInfo
         }
 
         /**
@@ -93,7 +75,7 @@ interface TokenService {
          */
         suspend fun Context.exchangeAccessToken(serverAuthCode: String): TokenInfo {
             val token = create().exchangeAccessToken(serverAuthCode)
-            saveToken(token)
+            mTokenInfo = saveToken(token)
             if (BuildConfig.DEBUG) Log.d(TAG, "save exchanged token=$token now=${System.currentTimeMillis()}")
             return token
         }
@@ -109,7 +91,7 @@ interface TokenService {
                 accessToken = token.accessToken,
                 expiresIn = token.expiresIn
             )
-            saveToken(token)
+            mTokenInfo = saveToken(token)
             if (BuildConfig.DEBUG) Log.d(TAG, "save refreshed token=$token now=${System.currentTimeMillis()}")
         }
     }

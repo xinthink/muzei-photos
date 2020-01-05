@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
 import androidx.preference.PreferenceFragmentCompat
-import com.xinthink.muzei.photos.App.Companion.updateDarkMode
 
 /** User Settings */
 class SettingsFragment : PreferenceFragmentCompat() {
