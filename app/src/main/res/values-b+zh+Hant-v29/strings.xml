@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_themes">
+        <item>淺色</item>
+        <item>深色</item>
+        <item>系統預設</item>
+    </string-array>
+</resources>

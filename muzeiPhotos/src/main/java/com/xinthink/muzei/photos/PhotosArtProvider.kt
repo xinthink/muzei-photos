@@ -61,7 +61,11 @@ class PhotosArtProvider : MuzeiArtProvider() {
     override fun onCommand(artwork: Artwork, id: Int) {
         when (id) {
             COMMAND_ID_SETTINGS -> Unit
-            COMMAND_ID_PRUNE -> setArtwork(emptyList()) // clean existed artworks
+            COMMAND_ID_PRUNE -> {
+                // clean existed artworks
+                setArtwork(emptyList())
+                context?.clearPageTokens()
+            }
         }
     }
 

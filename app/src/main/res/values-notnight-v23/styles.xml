@@ -9,5 +9,6 @@
         <item name="android:colorBackground">@color/primaryColor</item>
         <item name="android:textViewStyle">@style/DefaultTextView</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="alertDialogTheme">@style/AppTheme.DefaultDialog</item>
     </style>
 </resources>

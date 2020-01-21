@@ -18,7 +18,6 @@ package com.xinthink.muzei.photos
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.work.Constraints
 import androidx.work.Data
@@ -32,7 +31,6 @@ import com.google.android.apps.muzei.api.provider.ProviderContract
 import com.xinthink.muzei.photos.PhotosService.Companion.albumPhotos
 import com.xinthink.muzei.photos.worker.BuildConfig
 import com.xinthink.muzei.photos.worker.R
-import org.jetbrains.anko.defaultSharedPreferences
 import java.io.IOException
 
 /** A background worker to download photos */
@@ -63,8 +61,10 @@ class PhotosWorker(
         }
     }
 
+    private val selectedAlbumId: String? get() = applicationContext.selectedAlbumId
+
     override fun doWork(): Result {
-        val albumId: String = loadSelectedAlbumId() ?: return Result.failure()
+        val albumId: String = selectedAlbumId ?: return Result.failure()
         val isInitial = inputData.getBoolean("initial", false)
         val pageToken = if (isInitial) null else loadPageToken(albumId)
         val pagination = try {
@@ -106,14 +106,7 @@ class PhotosWorker(
         return Result.success()
     }
 
-    private fun loadSelectedAlbumId(): String? =
-        applicationContext.defaultSharedPreferences.getString("selected_album_id", null)
+    private fun loadPageToken(albumId: String): String? = applicationContext.loadPageToken(albumId)
 
-    private fun loadPageToken(albumId: String): String? =
-        applicationContext.pageTokenPrefs.getString("photos_page_token_$albumId", null)
-
-    private fun savePageToken(albumId: String, token: String?) =
-        applicationContext.pageTokenPrefs.edit {
-            putString("photos_page_token_$albumId", token)
-        }
+    private fun savePageToken(albumId: String, token: String?) = applicationContext.savePageToken(albumId, token)
 }

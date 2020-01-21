@@ -31,12 +31,14 @@ android {
 }
 
 dependencies {
-    implementation(kt)
-    implementation(coroutinesAndroid)
-    implementation(appCompat)
-    implementation(coreKtx)
+    api(kt)
+    api(coroutinesAndroid)
+    api(appCompat)
+    api(coreKtx)
+    api(preference)
+    api(ankoCommons)
+
     implementation(muzeiApi)
-    implementation(ankoCommons)
     implementation(workRuntime)
     implementation(retrofit)
     implementation(retrofitMoshi)

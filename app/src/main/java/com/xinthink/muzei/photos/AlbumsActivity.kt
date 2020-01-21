@@ -3,6 +3,7 @@ package com.xinthink.muzei.photos
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -62,6 +63,13 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
         viewModel = ViewModelProvider(this)[AlbumsViewModel::class.java]
         observeViewModel()
         viewModel.restoreSavedData(this)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.getBooleanExtra("switchAccount", false) == true) {
+            switchAccount()
+        }
     }
 
     private fun initGoogleSignIn() {
@@ -184,6 +192,24 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
         if (selected != null) {
             val a = it.albums.find { a -> a.id == selected.id }
             if (a?.isSummaryUpdated(selected) == true) viewModel.saveSelectedAlbumInfo(this, a)
+        }
+    }
+
+    private fun switchAccount() {
+        toast("Switching account...")
+
+        // unauthorized, login now
+        if (viewModel.isUnauthorized) return onClickAuthorize()
+
+        // logout current account before re-login
+        val task = signInClient.signOut()
+        task.addOnSuccessListener {
+            viewModel.clearCurrentSession(this)
+            onClickAuthorize() // login with another account
+        }
+        task.addOnFailureListener {
+            toast("Switching account failed, please try again later")
+            Log.w(TAG, "signOut failed: $it")
         }
     }
 

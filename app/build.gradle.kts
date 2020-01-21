@@ -11,8 +11,8 @@ android {
         applicationId = "com.xinthink.muzei.photos"
         minSdkVersion(V.minSdkVersion)
         targetSdkVersion(V.targetSdkVersion)
-        versionCode = 7
-        versionName = "1.5.0"
+        versionCode = 10
+        versionName = "2.0.0-dev"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -24,7 +24,7 @@ android {
             loadProperties(keyFile)
             val store = findProperty("store")
             if (store != null && file(store).exists()) {
-                println("keystore for release builds: $store")
+                // println("keystore for release builds: $store")
                 register("release") {
                     storeFile = file(store)
                     keyAlias = findProperty("alias") as String?
@@ -53,15 +53,10 @@ android {
 
 dependencies {
     implementation(project(":muzeiPhotos"))
-    implementation(kt)
-    implementation(coroutinesAndroid)
     implementation(anko)
     implementation(ankoListeners)
-    implementation(coreKtx)
     implementation(lifecycleX)
     implementation(viewModelKtx)
-    implementation(appCompat)
-    implementation(preference)
     implementation(material)
     implementation(constraintLayout)
     implementation(ankoCardView)

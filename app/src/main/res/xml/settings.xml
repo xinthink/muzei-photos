@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <EditTextPreference
-        android:key="keywords"
-        android:title="Keywords for searching photos"
-        />
-
-    <SwitchPreferenceCompat
-        app:key="featured"
-        app:title="Featured photos only"
-        app:defaultValue="true"
-        />
-
-    <SwitchPreferenceCompat
-        app:key="random"
-        app:title="Pick photos randomly"
-        app:defaultValue="true"
-        />
-
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:key="prefsDisplay"
+        app:title="@string/pref_group_display">
+        <ListPreference
+            app:defaultValue="@integer/prefDefaultTheme"
+            app:dialogTitle="@string/pref_choose_theme"
+            app:entries="@array/pref_themes"
+            app:entryValues="@array/prefThemeValues"
+            app:key="prefTheme"
+            app:title="@string/pref_theme"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="prefsAccount"
+        app:title="@string/pref_group_account">
+        <Preference
+            app:key="prefSwitchAccount"
+            app:title="@string/pref_switch_account" />
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
