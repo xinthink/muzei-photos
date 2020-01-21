@@ -1,6 +1,8 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.version
+import org.gradle.plugin.use.PluginDependenciesSpec
 import java.net.URI
 
 /**
@@ -41,6 +43,7 @@ object V {
     const val muzeiApiVersion = "3.2.0"
     const val gmsAuthVersion = "16.0.1"
 
+    val versionsPluginVersion = "0.27.0"
     const val ktlintVersion = "0.34.2"
     const val junitVersion = "4.12"
     const val testRunnerVersion = "1.2.0"
@@ -53,6 +56,8 @@ val DependencyHandler.kotlinPlugin get() = "org.jetbrains.kotlin:kotlin-gradle-p
 val DependencyHandler.ktlint get() = "com.pinterest:ktlint:${V.ktlintVersion}"
 val DependencyHandler.googleServices get() = "com.google.gms:google-services:${V.googleServicesPluginVersion}"
 val DependencyHandler.fabricPlugin get() = "io.fabric.tools:gradle:${V.fabricPluginVersion}"
+val PluginDependenciesSpec.versionsPlugin get() =
+    id("com.github.ben-manes.versions") version V.versionsPluginVersion
 
 val RepositoryHandler.fabricPublic get() = maven {
     url = URI.create("https://maven.fabric.io/public")
