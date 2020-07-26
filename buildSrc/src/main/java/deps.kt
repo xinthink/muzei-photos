@@ -7,12 +7,12 @@ import java.net.URI
  * Dependency versions
  */
 object V {
-    const val compileSdkVersion = 28
+    const val compileSdkVersion = 30
     const val targetSdkVersion = 28
     const val minSdkVersion = 19
-    const val androidPluginVersion = "3.5.3"
+    const val androidPluginVersion = "4.0.1"
 
-    const val kotlinVersion = "1.3.50"
+    const val kotlinVersion = "1.3.72"
     const val ktStdlib = "stdlib-jdk7"
     const val coroutinesVersion = "1.3.3"
     const val ankoVersion = "0.10.8"
@@ -38,7 +38,7 @@ object V {
     const val picassoVersion = "2.71828"
     const val picassoTransformationsVersion = "2.2.1"
     const val workManagerVersion = "2.2.0"
-    const val muzeiApiVersion = "3.2.0"
+    const val muzeiApiVersion = "3.4.0"
     const val gmsAuthVersion = "16.0.1"
 
     const val ktlintVersion = "0.34.2"

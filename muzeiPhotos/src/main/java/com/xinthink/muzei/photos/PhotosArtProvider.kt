@@ -16,8 +16,11 @@
 
 package com.xinthink.muzei.photos
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.util.Log
-import com.google.android.apps.muzei.api.UserCommand
+import androidx.core.app.RemoteActionCompat
+import androidx.core.graphics.drawable.IconCompat
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.MuzeiArtProvider
 import com.xinthink.muzei.photos.PhotosWorker.Companion.enqueueLoad
@@ -30,7 +33,6 @@ class PhotosArtProvider : MuzeiArtProvider() {
     companion object {
         private const val TAG = "MZProvider"
 
-        private const val COMMAND_ID_SETTINGS = 1
         private const val COMMAND_ID_PRUNE = 2
     }
 
@@ -45,22 +47,21 @@ class PhotosArtProvider : MuzeiArtProvider() {
         context?.enqueueLoad(initial)
     }
 
+    /* kept for backward compatibility with Muzei 3.3 */
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun getCommands(artwork: Artwork) = context?.run {
         listOfNotNull(
-            // UserCommand(
-            //     COMMAND_ID_SETTINGS,
-            //     getString(R.string.menu_settings)
-            // ),
-            UserCommand(
+            com.google.android.apps.muzei.api.UserCommand(
                 COMMAND_ID_PRUNE,
                 getString(R.string.menu_prune)
             )
         )
     } ?: emptyList()
 
+    /* kept for backward compatibility with Muzei 3.3 */
+    @Suppress("OverridingDeprecatedMember")
     override fun onCommand(artwork: Artwork, id: Int) {
         when (id) {
-            COMMAND_ID_SETTINGS -> Unit
             COMMAND_ID_PRUNE -> {
                 // clean existed artworks
                 setArtwork(emptyList())
@@ -69,31 +70,19 @@ class PhotosArtProvider : MuzeiArtProvider() {
         }
     }
 
-    // override fun openArtworkInfo(artwork: Artwork): Boolean {
-    //     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) return super.openArtworkInfo(artwork)
-    //
-    //     // workaround to restrictions on starting activities from the background
-    //     // see https://developer.android.com/guide/components/activities/background-starts
-    //     val uri = artwork.webUri ?: return false
-    //     val ctx = context ?: return false
-    //     val pendingIntent = PendingIntent.getActivity(
-    //         ctx, 0,
-    //         Intent(Intent.ACTION_VIEW, uri)
-    //             .addCategory(Intent.CATEGORY_BROWSABLE)
-    //             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-    //         PendingIntent.FLAG_UPDATE_CURRENT
-    //     )
-    //     val notification =
-    //         NotificationCompat.Builder(ctx, CHANNEL_NAVIGATION)
-    //             .setSmallIcon(R.mipmap.ic_notification)
-    //             .setContentTitle(ctx.getString(R.string.push_title_photo))
-    //             .setContentText(ctx.getString(R.string.push_text_photo))
-    //             .setPriority(NotificationCompat.PRIORITY_HIGH)
-    //             .setCategory(NotificationCompat.CATEGORY_NAVIGATION)
-    //             .setContentIntent(pendingIntent)
-    //             .setAutoCancel(true)
-    //             .build()
-    //     NotificationManagerCompat.from(ctx).notify(0, notification)
-    //     return true
-    // }
+    /* Used on Muzei 3.4+ */
+    override fun getCommandActions(artwork: Artwork) = context?.run {
+        listOf(
+            RemoteActionCompat(
+                IconCompat.createWithResource(this, R.drawable.muzei_launch_command),
+                getString(R.string.menu_prune),
+                getString(R.string.menu_prune),
+                PendingIntent.getBroadcast(this, 0,
+                    Intent(this, PhotosPruneReceiver::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT)
+            ).apply {
+                setShouldShowIcon(false)
+            }
+        )
+    } ?: emptyList()
 }
