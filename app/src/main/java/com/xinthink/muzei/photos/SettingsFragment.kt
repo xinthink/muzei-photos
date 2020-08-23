@@ -31,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         AlertDialog.Builder(ctx)
             .setTitle(R.string.dlg_title_switch_account)
             .setMessage(R.string.dlg_msg_switch_account)
-            .setPositiveButton(android.R.string.yes) { _, _ ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 activity?.finish()
                 @Suppress("EXPERIMENTAL_API_USAGE")
                 ctx.intentFor<AlbumsActivity>("switchAccount" to true)

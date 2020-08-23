@@ -17,7 +17,6 @@ package com.xinthink.muzei.photos
 
 import android.content.Context
 import android.util.Log
-import android.util.Size
 import androidx.core.net.toUri
 import androidx.work.Constraints
 import androidx.work.Data
@@ -119,14 +118,11 @@ class PhotosWorker(
         if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $mediaItem")
 
         try {
-            var url = mediaItem.baseUrl
-            val size = mediaItem.downloadSize // determines the desired dimensions
-            url += if (size.width > 0)
-                "=w${size.width}-h${size.height}" // specifies the maximum dimensions
-            else "=d" // or download directly
+            val (w, h) = mediaItem.downloadSize // determines the desired dimensions
+            val spec = if (w > 0) "w$w-h$h" else "d" // specifies desired dimensions or download directly
 
             val req = Request.Builder()
-                .url(url)
+                .url("${mediaItem.baseUrl}=$spec")
                 .build()
             getDownloaderHttpClient().newCall(req).execute().use { resp ->
                 if (!resp.isSuccessful) {
@@ -160,23 +156,21 @@ class PhotosWorker(
     }
 
     /** Converts this [MediaItem] into an [Artwork] object. */
-    private fun MediaItem.toArtwork(): Artwork = Artwork.Builder()
-        .token(id)
-        .attribution(mediaMetadata?.formattedCreationTime())
-        .title(
-            if (description?.isNotEmpty() == true) description else defaultDescription
-        )
-        .byline(contributorInfo?.displayName)
-        .webUri(productUrl.toUri())
-        .build()
+    private fun MediaItem.toArtwork(): Artwork = Artwork(
+        token = id,
+        attribution = mediaMetadata?.formattedCreationTime(),
+        title = if (description?.isNotEmpty() == true) description else defaultDescription,
+        byline = contributorInfo?.displayName,
+        webUri = productUrl.toUri()
+    )
 
     /** Determines the maximum download dimension of this [MediaItem]. */
-    private val MediaItem.downloadSize: Size
+    private val MediaItem.downloadSize: Pair<Int, Int>
         get() {
             val ratio = aspectRatio
             val h = applicationContext.screenHeigth
             val w = if (ratio != null) h * ratio else 0.0
-            return Size(w.toInt(), h)
+            return Pair(w.toInt(), h)
         }
 
     private fun loadPageToken(albumId: String): String? = applicationContext.loadPageToken(albumId)

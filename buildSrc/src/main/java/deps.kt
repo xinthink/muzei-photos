@@ -9,12 +9,12 @@ import java.net.URI
  * Dependency versions
  */
 object V {
-    const val compileSdkVersion = 29
-    const val targetSdkVersion = 29
-    const val minSdkVersion = 21
+    const val compileSdkVersion = 30
+    const val targetSdkVersion = 28
+    const val minSdkVersion = 19
     const val androidPluginVersion = "4.0.1"
 
-    const val kotlinVersion = "1.3.71"
+    const val kotlinVersion = "1.3.72"
     const val ktStdlib = "stdlib-jdk7"
     const val coroutinesVersion = "1.3.3"
     const val ankoVersion = "0.10.8"
