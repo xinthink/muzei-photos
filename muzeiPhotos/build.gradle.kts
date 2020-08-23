@@ -42,6 +42,7 @@ dependencies {
     implementation(workRuntime)
     implementation(retrofit)
     implementation(retrofitMoshi)
+    implementation(okhttpLogging)
 
     // test
     testImplementation(junit)

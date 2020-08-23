@@ -57,7 +57,10 @@ interface TokenService {
 
         private fun create(): TokenService = Retrofit.Builder()
             .baseUrl("https://www.googleapis.com/oauth2/v4/")
-            .client(OkHttpClient.Builder().build())
+            .client(OkHttpClient.Builder()
+                .addLoggingInterceptor()
+                .build()
+            )
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()

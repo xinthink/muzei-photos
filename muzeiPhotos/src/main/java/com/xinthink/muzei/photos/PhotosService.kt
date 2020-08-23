@@ -38,7 +38,7 @@ interface PhotosService {
 
         /** Fetch Photos albums */
         suspend fun Context.fetchPhotosAlbums(
-            pageSize: Int = 10,
+            pageSize: Int = 36,
             pageToken: String? = null
         ): AlbumsPagination {
             val token = TokenService.tokenInfo
@@ -52,7 +52,7 @@ interface PhotosService {
         @Throws(IOException::class)
         internal fun Context.albumPhotos(
             albumId: String,
-            pageSize: Int = 10,
+            pageSize: Int = 21,
             pageToken: String? = null
         ): MediaItemsPagination {
             runBlocking {
@@ -77,10 +77,11 @@ interface PhotosService {
                 .build()
         )
 
-        fun create(): PhotosService = Retrofit.Builder()
+        private fun create(): PhotosService = Retrofit.Builder()
             .baseUrl("https://photoslibrary.googleapis.com/v1/")
             .client(OkHttpClient.Builder()
                 .addInterceptor(Companion::authorize)
+                .addLoggingInterceptor()
                 .build()
             )
             .addConverterFactory(MoshiConverterFactory.create())

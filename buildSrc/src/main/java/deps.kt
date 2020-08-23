@@ -9,12 +9,12 @@ import java.net.URI
  * Dependency versions
  */
 object V {
-    const val compileSdkVersion = 28
-    const val targetSdkVersion = 28
-    const val minSdkVersion = 19
-    const val androidPluginVersion = "3.5.3"
+    const val compileSdkVersion = 29
+    const val targetSdkVersion = 29
+    const val minSdkVersion = 21
+    const val androidPluginVersion = "4.0.1"
 
-    const val kotlinVersion = "1.3.50"
+    const val kotlinVersion = "1.3.71"
     const val ktStdlib = "stdlib-jdk7"
     const val coroutinesVersion = "1.3.3"
     const val ankoVersion = "0.10.8"
@@ -35,15 +35,15 @@ object V {
     const val preferenceVersion = "1.1.0"
     const val materialVersion = "1.1.0-beta02"
     const val exifInterfaceVersion = "1.0.0"
-    const val retrofitVersion = "2.6.3"
-    const val okhttpVersion = "3.14.4"
+    const val retrofitVersion = "2.9.0"
+    const val okhttpVersion = "3.14.9"
     const val picassoVersion = "2.71828"
     const val picassoTransformationsVersion = "2.2.1"
     const val workManagerVersion = "2.2.0"
-    const val muzeiApiVersion = "3.2.0"
+    const val muzeiApiVersion = "3.4.0"
     const val gmsAuthVersion = "16.0.1"
 
-    val versionsPluginVersion = "0.27.0"
+    const val versionsPluginVersion = "0.27.0"
     const val ktlintVersion = "0.34.2"
     const val junitVersion = "4.12"
     const val testRunnerVersion = "1.2.0"
@@ -100,6 +100,7 @@ val DependencyHandler.retrofit get() = "com.squareup.retrofit2:retrofit:${V.retr
 val DependencyHandler.retrofitMoshi get() = "com.squareup.retrofit2:converter-moshi:${V.retrofitVersion}"
 val DependencyHandler.retrofitRx get() = "com.squareup.retrofit2:adapter-rxjava2:${V.retrofitVersion}"
 val DependencyHandler.okhttp get() = "com.squareup.okhttp3:okhttp:${V.okhttpVersion}"
+val DependencyHandler.okhttpLogging get() = "com.squareup.okhttp3:logging-interceptor:${V.okhttpVersion}"
 val DependencyHandler.picasso get() = "com.squareup.picasso:picasso:${V.picassoVersion}"
 val DependencyHandler.picassoTransformations get() = "jp.wasabeef:picasso-transformations:${V.picassoTransformationsVersion}"
 

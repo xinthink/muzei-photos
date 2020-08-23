@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.xinthink.muzei.photos
 
 import android.content.Context
 import android.util.Log
+import android.util.Size
 import androidx.core.net.toUri
 import androidx.work.Constraints
 import androidx.work.Data
@@ -27,20 +27,26 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.android.apps.muzei.api.provider.Artwork
+import com.google.android.apps.muzei.api.provider.ProviderClient
 import com.google.android.apps.muzei.api.provider.ProviderContract
 import com.xinthink.muzei.photos.PhotosService.Companion.albumPhotos
 import com.xinthink.muzei.photos.worker.BuildConfig
 import com.xinthink.muzei.photos.worker.R
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import java.io.IOException
+import java.io.OutputStream
 
 /** A background worker to download photos */
 class PhotosWorker(
     context: Context,
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
-
     companion object {
         private const val TAG = "MZPWorker"
+
+        private var mDownloaderHttpClient: OkHttpClient? = null
 
         /** Schedule a photos-download background job */
         fun Context.enqueueLoad(initial: Boolean) {
@@ -61,17 +67,33 @@ class PhotosWorker(
         }
     }
 
+    @Synchronized
+    fun getDownloaderHttpClient(): OkHttpClient {
+        if (mDownloaderHttpClient == null) {
+            mDownloaderHttpClient = OkHttpClient.Builder()
+                .cache(applicationContext.createPhotosCache())
+                .addLoggingInterceptor()
+                .build()
+        }
+        return mDownloaderHttpClient!!
+    }  
+
     private val selectedAlbumId: String? get() = applicationContext.selectedAlbumId
+    private val defaultDescription: String by lazy {
+        applicationContext.getString(R.string.default_photo_desc)
+    }
 
     override fun doWork(): Result {
         val albumId: String = selectedAlbumId ?: return Result.failure()
         val isInitial = inputData.getBoolean("initial", false)
         val pageToken = if (isInitial) null else loadPageToken(albumId)
         val pagination = try {
-            if (BuildConfig.DEBUG) Log.d(TAG, "fetching mediaItems album=$albumId, pageToken=$pageToken")
+            if (BuildConfig.DEBUG) Log.d(
+                TAG,
+                "fetching mediaItems album=$albumId, pageToken=$pageToken"
+            )
             applicationContext.albumPhotos(
                 albumId = albumId,
-                pageSize = 3,
                 pageToken = pageToken
             ).also { resp ->
                 savePageToken(albumId, resp.nextPageToken)
@@ -89,24 +111,76 @@ class PhotosWorker(
         val providerClient = ProviderContract.getProviderClient(
             applicationContext, BuildConfig.PHOTOS_AUTHORITY
         )
-        val defaultDesc = applicationContext.getString(R.string.default_photo_desc)
-        providerClient.addArtwork(pagination.mediaItems
-            // .filter { it.mimeType.startsWith("image") }
-            .map {
-                if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $it")
-                Artwork().apply {
-                    token = it.id
-                    attribution = it.mediaMetadata?.formattedCreationTime()
-                    title = if (it.description?.isNotEmpty() == true) it.description else defaultDesc
-                    byline = it.contributorInfo?.displayName
-                    persistentUri = "${it.baseUrl}=d".toUri()
-                    webUri = it.productUrl.toUri()
-                }
-            })
+        pagination.mediaItems.forEach { item -> addArtwork(providerClient, item) }
         return Result.success()
     }
 
+    private fun addArtwork(providerClient: ProviderClient, mediaItem: MediaItem) {
+        if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $mediaItem")
+
+        try {
+            var url = mediaItem.baseUrl
+            val size = mediaItem.downloadSize // determines the desired dimensions
+            url += if (size.width > 0)
+                "=w${size.width}-h${size.height}" // specifies the maximum dimensions
+            else "=d" // or download directly
+
+            val req = Request.Builder()
+                .url(url)
+                .build()
+            getDownloaderHttpClient().newCall(req).execute().use { resp ->
+                if (!resp.isSuccessful) {
+                    Log.e(TAG, "download MediaItem failed: ${resp.code()}")
+                    return
+                }
+
+                val uri = providerClient.addArtwork(mediaItem.toArtwork())
+                if (uri != null) {
+                    val os = applicationContext.contentResolver.openOutputStream(uri)
+                    downloadMedia(resp, os)
+                }
+            }
+        } catch (e: Throwable) {
+            Log.e(TAG, "download MediaItem failed", e)
+        }
+    }
+
+    private fun downloadMedia(resp: Response, os: OutputStream?) {
+        if (os == null) return
+        val ins = resp.body()?.byteStream() ?: return
+
+        os.use {
+            val bytes = ByteArray(512)
+            var len = ins.read(bytes)
+            while (len != -1) {
+                os.write(bytes, 0, len)
+                len = ins.read(bytes)
+            }
+        }
+    }
+
+    /** Converts this [MediaItem] into an [Artwork] object. */
+    private fun MediaItem.toArtwork(): Artwork = Artwork.Builder()
+        .token(id)
+        .attribution(mediaMetadata?.formattedCreationTime())
+        .title(
+            if (description?.isNotEmpty() == true) description else defaultDescription
+        )
+        .byline(contributorInfo?.displayName)
+        .webUri(productUrl.toUri())
+        .build()
+
+    /** Determines the maximum download dimension of this [MediaItem]. */
+    private val MediaItem.downloadSize: Size
+        get() {
+            val ratio = aspectRatio
+            val h = applicationContext.screenHeigth
+            val w = if (ratio != null) h * ratio else 0.0
+            return Size(w.toInt(), h)
+        }
+
     private fun loadPageToken(albumId: String): String? = applicationContext.loadPageToken(albumId)
 
-    private fun savePageToken(albumId: String, token: String?) = applicationContext.savePageToken(albumId, token)
+    private fun savePageToken(albumId: String, token: String?) =
+        applicationContext.savePageToken(albumId, token)
 }
