@@ -76,7 +76,7 @@ class PhotosWorker(
                 .build()
         }
         return mDownloaderHttpClient!!
-    }  
+    }
 
     private val selectedAlbumId: String? get() = applicationContext.selectedAlbumId
     private val defaultDescription: String by lazy {
