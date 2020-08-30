@@ -10,7 +10,7 @@ import java.net.URI
  */
 object V {
     const val compileSdkVersion = 30
-    const val targetSdkVersion = 28
+    const val targetSdkVersion = 30
     const val minSdkVersion = 19
     const val androidPluginVersion = "4.0.1"
 
