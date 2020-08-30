@@ -8,7 +8,7 @@ permalink: /faq
 
 - Open the Muzei app
 - In the preview screen (the first tab), press the popup menu at the bottom right corner
-- And tap 'Clear Downloaded Photos'
+- And tap 'Clear & Re-download'
 - Previously downloaded photos will be removed, replaced with new ones according to the latest settings
 
 ![screenshot menu](/assets/img/screenshot_cleanup.jpg)

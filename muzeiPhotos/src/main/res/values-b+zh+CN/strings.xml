@@ -3,7 +3,7 @@
     <string name="menu_settings">设置</string>
     <string name="default_photo_desc">Google相册中的照片</string>
     <string name="description">您Google相册中的照片</string>
-    <string name="menu_prune">清空已下载照片</string>
+    <string name="menu_prune">清空并重新下载</string>
     <string name="name">影集</string>
     <string name="channel_navigation">重定向</string>
     <string name="channel_navigation_desc">重定向至原始Google Photos页面</string>

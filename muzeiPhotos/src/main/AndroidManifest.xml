@@ -38,7 +38,7 @@
                 android:value="com.xinthink.muzei.photos.AlbumsActivity" />
         </provider>
 
-        <receiver android:name="com.xinthink.muzei.photos.PhotosPruneReceiver"
+        <receiver android:name="com.xinthink.muzei.photos.CommandReceiver"
             android:exported="false"
             />
     </application>

@@ -32,8 +32,6 @@ class PhotosArtProvider : MuzeiArtProvider() {
 
     companion object {
         private const val TAG = "MZProvider"
-
-        private const val COMMAND_ID_PRUNE = 2
     }
 
     override fun onCreate(): Boolean {
@@ -71,18 +69,29 @@ class PhotosArtProvider : MuzeiArtProvider() {
     }
 
     /* Used on Muzei 3.4+ */
-    override fun getCommandActions(artwork: Artwork) = context?.run {
-        listOf(
+    override fun getCommandActions(artwork: Artwork): List<RemoteActionCompat> {
+        val ctx = context ?: return emptyList()
+        return listOf(
             RemoteActionCompat(
-                IconCompat.createWithResource(this, R.drawable.muzei_launch_command),
-                getString(R.string.menu_prune),
-                getString(R.string.menu_prune),
-                PendingIntent.getBroadcast(this, 0,
-                    Intent(this, PhotosPruneReceiver::class.java),
-                    PendingIntent.FLAG_UPDATE_CURRENT)
+                IconCompat.createWithResource(ctx, android.R.drawable.ic_menu_delete),
+                ctx.getString(R.string.menu_prune),
+                "",
+                PendingIntent.getBroadcast(
+                    ctx, 0,
+                    Intent(ctx, CommandReceiver::class.java).putExtra(
+                        EXTRA_COMMAND_ID,
+                        COMMAND_ID_PRUNE
+                    ),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
             ).apply {
                 setShouldShowIcon(false)
             }
         )
-    } ?: emptyList()
+    }
 }
+
+/** Command id of deleting all downloaded photos */
+const val COMMAND_ID_PRUNE = 2
+
+const val EXTRA_COMMAND_ID = "mzp.command_id"
