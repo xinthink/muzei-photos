@@ -1,8 +1,8 @@
 name: Publish
 
 on:
-  push:
-    branches: 'deploy'
+  release:
+    types: published
 
 jobs:
   publish:
