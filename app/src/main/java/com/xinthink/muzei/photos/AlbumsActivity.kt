@@ -11,12 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.xinthink.muzei.photos.worker.BuildConfig
 import com.xinthink.widgets.LinearRecyclerOnScrollListener
 import kotlinx.coroutines.CoroutineScope
@@ -175,7 +175,7 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
             }
         } catch (e: Exception) {
             // FIXME crashes workaround: https://is.gd/VomkBY https://is.gd/3OWuSZ
-            Crashlytics.logException(e)
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 

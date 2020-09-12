@@ -2,7 +2,6 @@ package com.xinthink.muzei.photos
 
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.crashlytics.android.Crashlytics
 import com.xinthink.widgets.Alerts.dummyNoButton
 import com.xinthink.widgets.Alerts.materialAlert
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder
@@ -22,7 +21,7 @@ fun ConstraintLayout.addCrashIcon() {
                 title = "Crash!"
                 message = "Would you like to crash the app in order to verify Crashlytics integration?"
                 yesButton {
-                    Crashlytics.getInstance().crash()
+                    throw RuntimeException("Test Crash") // Force a crash
                 }
                 dummyNoButton()
             }.show()

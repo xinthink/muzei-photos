@@ -1,9 +1,7 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.version
 import org.gradle.plugin.use.PluginDependenciesSpec
-import java.net.URI
 
 /**
  * Dependency versions
@@ -20,10 +18,10 @@ object V {
     const val ankoVersion = "0.10.8"
 
     // Firebase
-    const val googleServicesPluginVersion = "4.3.2"
-    const val fabricPluginVersion = "1.31.0"
-    const val firebaseAnalyticsVersion = "17.2.0"
-    const val crashlyticsVersion = "2.10.1"
+    const val googleServicesPluginVersion = "4.3.3"
+    const val firebaseAnalyticsVersion = "17.5.0"
+    const val crashlyticsVersion = "17.2.1"
+    const val crashlyticsPluginVersion = "2.3.0"
 
     const val appCompatVersion = "1.1.0"
     const val browserVersion = "1.0.0"
@@ -55,21 +53,13 @@ val DependencyHandler.androidPlugin get() = "com.android.tools.build:gradle:${V.
 val DependencyHandler.kotlinPlugin get() = "org.jetbrains.kotlin:kotlin-gradle-plugin:${V.kotlinVersion}"
 val DependencyHandler.ktlint get() = "com.pinterest:ktlint:${V.ktlintVersion}"
 val DependencyHandler.googleServices get() = "com.google.gms:google-services:${V.googleServicesPluginVersion}"
-val DependencyHandler.fabricPlugin get() = "io.fabric.tools:gradle:${V.fabricPluginVersion}"
+val DependencyHandler.crashlyticsPlugin get() = "com.google.firebase:firebase-crashlytics-gradle:${V.crashlyticsPluginVersion}"
 val PluginDependenciesSpec.versionsPlugin get() =
     id("com.github.ben-manes.versions") version V.versionsPluginVersion
 
-val RepositoryHandler.fabricPublic get() = maven {
-    url = URI.create("https://maven.fabric.io/public")
-    @Suppress("UnstableApiUsage")
-    content {
-        includeGroup("io.fabric.tools")
-    }
-}
-
 // Firebase dependencies
-val DependencyHandler.firebaseAnalytics get() = "com.google.firebase:firebase-analytics:${V.firebaseAnalyticsVersion}"
-val DependencyHandler.crashlytics get() = "com.crashlytics.sdk.android:crashlytics:${V.crashlyticsVersion}"
+val DependencyHandler.analytics get() = "com.google.firebase:firebase-analytics-ktx:${V.firebaseAnalyticsVersion}"
+val DependencyHandler.crashlytics get() = "com.google.firebase:firebase-crashlytics-ktx:${V.crashlyticsVersion}"
 
 // kotlin/anko dependencies
 val DependencyHandler.kt get() = kotlin(V.ktStdlib, V.kotlinVersion)

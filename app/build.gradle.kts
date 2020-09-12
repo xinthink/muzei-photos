@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-android-extensions")
-    id("io.fabric")
 }
 
 android {
@@ -35,6 +34,10 @@ android {
         }
     }
     buildTypes {
+        named("debug") {
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
         named("release") {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -66,6 +69,7 @@ dependencies {
     implementation(picassoTransformations)
 
     // Firebase
+    implementation(analytics)
     implementation(crashlytics)
 
     // google sign-in & photos authorization
@@ -79,4 +83,5 @@ dependencies {
 
 apply {
     plugin("com.google.gms.google-services")
+    plugin("com.google.firebase.crashlytics")
 }
