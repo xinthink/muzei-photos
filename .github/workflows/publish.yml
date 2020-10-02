@@ -22,7 +22,7 @@ jobs:
       run: gem install bundler && bundle install
     - name: setup properties & keys
       run: |
-        echo "${{ secrets.GoogleApiKeys }}" > muzeiPhotos/googleapi.properties
+        echo "${{ secrets.GoogleApiKeys }}" | base64 --decode > muzeiPhotos/googleapi.properties
         echo "${{ secrets.GoogleServicesConfig }}" | base64 --decode > app/google-services.json
         echo -e "store=upload_key.jks\nalias=upload\npass=${{ secrets.JKS_PASS }}\nstorePass=${{ secrets.JKS_PASS }}" > app/keystore.properties
         echo -e "sdk.dir=$ANDROID_HOME\nkeystore.props.file=keystore.properties" > local.properties
