@@ -26,7 +26,7 @@ jobs:
         java-version: 1.8
     - name: setup properties file
       run: |
-        echo "${{ secrets.GoogleApiKeys }}" > muzeiPhotos/googleapi.properties
+        echo "${{ secrets.GoogleApiKeys }}" | base64 --decode > muzeiPhotos/googleapi.properties
         echo "${{ secrets.GoogleServicesConfig }}" | base64 --decode > app/google-services.json
     - name: check
       run: ./gradlew check -i --build-cache
