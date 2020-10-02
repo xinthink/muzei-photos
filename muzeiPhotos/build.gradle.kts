@@ -38,6 +38,11 @@ dependencies {
     api(preference)
     api(ankoCommons)
 
+    // Firebase
+    api(firebaseBoM)
+    api(analytics)
+    api(crashlytics)
+
     implementation(muzeiApi)
     implementation(workRuntime)
     implementation(retrofit)

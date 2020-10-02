@@ -138,7 +138,7 @@ data class MediaItemsPagination(
         return try {
             val parser = creationTimeParser.get() ?: return ""
             val fmt = creationTimeFmt.get() ?: return ""
-            fmt.format(parser.parse(creationTime))
+            fmt.format(parser.parse(creationTime)!!)
         } catch (e: Throwable) {
             e.printStackTrace()
             ""

@@ -10,6 +10,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.xinthink.muzei.photos.worker.BuildConfig
 
 /** A worker handling Muzei commands. */
@@ -23,6 +24,8 @@ class CommandWorker(
         /** Schedule a Muzei command handling job */
         fun Context.enqueueCmd(intent: Intent) {
             Log.d(TAG, "enqueueCmd intent=$intent")
+            logEvent("command", "intent" to "$intent")
+
             val workManager = WorkManager.getInstance(this)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<CommandWorker>()
@@ -45,6 +48,7 @@ class CommandWorker(
             Result.success()
         } catch (e: Throwable) {
             Log.e(TAG, "failed to handle command: id=$cmd", e)
+            FirebaseCrashlytics.getInstance().recordException(e)
             Result.failure()
         }
     }

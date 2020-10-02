@@ -16,7 +16,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
 import com.xinthink.muzei.photos.worker.BuildConfig
 import com.xinthink.widgets.LinearRecyclerOnScrollListener
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +39,7 @@ import org.jetbrains.anko.toast
  */
 @ExperimentalCoroutinesApi
 class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineScope by MainScope() {
+    private lateinit var analytics: FirebaseAnalytics
     private lateinit var viewModel: AlbumsViewModel
     private lateinit var signInClient: GoogleSignInClient
     private lateinit var albumsAdapter: AlbumsAdapter
@@ -43,6 +47,7 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
 
         frameLayout {
             recyclerView {
@@ -94,13 +99,30 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
         }
     }
 
-    override fun onAlbumSelectionChanged(album: Album) = viewModel.saveSelectedAlbumInfo(this, album)
+    override fun onAlbumSelectionChanged(album: Album) {
+        analytics.setUserProperties(
+            "album" to album.title,
+            "album_size" to "${album.mediaItemsCount}"
+        )
+        analytics.logEvent(
+            FirebaseAnalytics.Event.SELECT_ITEM,
+            FirebaseAnalytics.Param.CONTENT_TYPE to "album",
+            FirebaseAnalytics.Param.ITEM_ID to album.title
+        )
+        viewModel.saveSelectedAlbumInfo(this, album)
+    }
 
-    override fun onClickAuthorize() = startActivityForResult(signInClient.signInIntent, RC_SIGN_IN)
+    override fun onClickAuthorize() {
+        analytics.logEvent("authorize")
+        startActivityForResult(signInClient.signInIntent, RC_SIGN_IN)
+    }
 
     override fun isUnauthorized(): Boolean = viewModel.isUnauthorized
 
-    override fun refreshAlbums() = onTokenUpdated.onChanged(null)
+    override fun refreshAlbums() {
+        analytics.logEvent("refresh_album")
+        onTokenUpdated.onChanged(null)
+    }
 
     override fun openPreferences() {
         startActivity<SettingsActivity>()
@@ -149,6 +171,14 @@ class AlbumsActivity : AppCompatActivity(), AlbumsAdapter.Callback, CoroutineSco
 
     private val onAccountUpdated = Observer<GoogleSignInAccount?> {
         albumsAdapter.account = it
+        if (it != null) {
+            analytics.setUserId(it.email)
+            FirebaseCrashlytics.getInstance().setUserId(it.email ?: "")
+            analytics.logEvent(
+                FirebaseAnalytics.Event.LOGIN,
+                FirebaseAnalytics.Param.METHOD to "google"
+            )
+        }
     }
 
     private val onSelectedAlbumUpdated = Observer<Album?> {

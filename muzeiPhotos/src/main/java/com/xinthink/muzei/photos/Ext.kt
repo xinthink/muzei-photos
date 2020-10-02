@@ -12,7 +12,7 @@ const val CHANNEL_NAVIGATION = "CHANNEL_NAV"
 const val PHOTOS_CACHE_SIZE = 256L * 1024 * 1024
 
 val Context.screenWidth: Int get() = resources.displayMetrics.widthPixels
-val Context.screenHeigth: Int get() = resources.displayMetrics.heightPixels
+val Context.screenHeight: Int get() = resources.displayMetrics.heightPixels
 
 /** Get cache settings for photos downloader */
 fun Context.createPhotosCache(): Cache =

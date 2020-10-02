@@ -68,10 +68,6 @@ dependencies {
     implementation(picasso)
     implementation(picassoTransformations)
 
-    // Firebase
-    implementation(analytics)
-    implementation(crashlytics)
-
     // google sign-in & photos authorization
     implementation(gmsAuth)
 

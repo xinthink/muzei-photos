@@ -19,8 +19,9 @@ object V {
 
     // Firebase
     const val googleServicesPluginVersion = "4.3.3"
-    const val firebaseAnalyticsVersion = "17.5.0"
-    const val crashlyticsVersion = "17.2.1"
+    const val firebaseVersion = "25.10.0"
+    // const val firebaseAnalyticsVersion = "17.5.0"
+    // const val crashlyticsVersion = "17.2.1"
     const val crashlyticsPluginVersion = "2.3.0"
 
     const val appCompatVersion = "1.1.0"
@@ -58,8 +59,9 @@ val PluginDependenciesSpec.versionsPlugin get() =
     id("com.github.ben-manes.versions") version V.versionsPluginVersion
 
 // Firebase dependencies
-val DependencyHandler.analytics get() = "com.google.firebase:firebase-analytics-ktx:${V.firebaseAnalyticsVersion}"
-val DependencyHandler.crashlytics get() = "com.google.firebase:firebase-crashlytics-ktx:${V.crashlyticsVersion}"
+val DependencyHandler.firebaseBoM get() = platform("com.google.firebase:firebase-bom:${V.firebaseVersion}")
+val DependencyHandler.analytics get() = "com.google.firebase:firebase-analytics-ktx"
+val DependencyHandler.crashlytics get() = "com.google.firebase:firebase-crashlytics-ktx"
 
 // kotlin/anko dependencies
 val DependencyHandler.kt get() = kotlin(V.ktStdlib, V.kotlinVersion)

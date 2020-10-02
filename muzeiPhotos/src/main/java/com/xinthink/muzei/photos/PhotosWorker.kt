@@ -1,18 +1,3 @@
-/*
- * Copyright 2018 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.xinthink.muzei.photos
 
 import android.content.Context
@@ -28,6 +13,8 @@ import androidx.work.WorkerParameters
 import com.google.android.apps.muzei.api.provider.Artwork
 import com.google.android.apps.muzei.api.provider.ProviderClient
 import com.google.android.apps.muzei.api.provider.ProviderContract
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.xinthink.muzei.photos.PhotosService.Companion.albumPhotos
 import com.xinthink.muzei.photos.worker.BuildConfig
 import com.xinthink.muzei.photos.worker.R
@@ -50,6 +37,8 @@ class PhotosWorker(
         /** Schedule a photos-download background job */
         fun Context.enqueueLoad(initial: Boolean) {
             if (BuildConfig.DEBUG) Log.d(TAG, "enqueueLoad initial=$initial")
+            logEvent("enqueue_photo_dl", "initial" to "$initial")
+
             val workManager = WorkManager.getInstance(this)
             workManager.enqueue(
                 OneTimeWorkRequestBuilder<PhotosWorker>()
@@ -86,6 +75,14 @@ class PhotosWorker(
         val albumId: String = selectedAlbumId ?: return Result.failure()
         val isInitial = inputData.getBoolean("initial", false)
         val pageToken = if (isInitial) null else loadPageToken(albumId)
+
+        logEvent(
+            "get_photos",
+            "album" to albumId,
+            "initial" to "$isInitial",
+            "pageToken" to (pageToken ?: "")
+        )
+
         val pagination = try {
             if (BuildConfig.DEBUG) Log.d(
                 TAG,
@@ -99,6 +96,8 @@ class PhotosWorker(
             }
         } catch (e: IOException) {
             Log.e(TAG, "Error reading Photos response", e)
+            logEvent("err_get_photos", "message" to "$e")
+            FirebaseCrashlytics.getInstance().recordException(e)
             return Result.failure()
         }
 
@@ -120,6 +119,12 @@ class PhotosWorker(
         try {
             val (w, h) = mediaItem.downloadSize // determines the desired dimensions
             val spec = if (w > 0) "w$w-h$h" else "d" // specifies desired dimensions or download directly
+            logEvent(
+                "dl_photo",
+                FirebaseAnalytics.Param.ITEM_ID to mediaItem.id,
+                "spec" to spec
+            )
+            FirebaseCrashlytics.getInstance().setCustomKey("media_item_spec", spec)
 
             val req = Request.Builder()
                 .url("${mediaItem.baseUrl}=$spec")
@@ -138,6 +143,7 @@ class PhotosWorker(
             }
         } catch (e: Throwable) {
             Log.e(TAG, "download MediaItem failed", e)
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 
@@ -168,7 +174,7 @@ class PhotosWorker(
     private val MediaItem.downloadSize: Pair<Int, Int>
         get() {
             val ratio = aspectRatio
-            val h = applicationContext.screenHeigth
+            val h = applicationContext.screenHeight
             val w = if (ratio != null) h * ratio else 0.0
             return Pair(w.toInt(), h)
         }
