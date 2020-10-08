@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
+/** The minimal interval between download requests, to reduce 429 errors */
+const val minDownloadInterval = 900000L
+
 /** Retrieves the default storage for Preferences */
 val Context.defaultSharedPrefs: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(this)
@@ -94,7 +97,10 @@ fun Context.savePageToken(albumId: String, token: String?) =
 }
 
 /** Clear all saved pagination tokens */
-fun Context.clearPageTokens() = pageTokenPrefs.edit { clear() }
+fun Context.clearPageTokens() {
+    pageTokenPrefs.edit { clear() }
+    lastDownloadTime = 0L // also reset the timestamp to allow new downloads
+}
 
 /** Clear saved selected album & pagination tokens */
 fun Context.clearAlbumAndPageTokens() {
@@ -106,3 +112,8 @@ fun Context.clearAlbumAndPageTokens() {
     }
     clearPageTokens()
 }
+
+/** Timestamp of previous download (accessing Google Photos API) */
+var Context.lastDownloadTime
+    get() = defaultSharedPrefs.getLong("last_download_ts", 0L)
+    set(value) = defaultSharedPrefs.edit { putLong("last_download_ts", maxOf(value, 0L)) }

@@ -34,10 +34,20 @@ class PhotosWorker(
 
         private var mDownloaderHttpClient: OkHttpClient? = null
 
+        /** Checks API access interval to avoid 429 errors */
+        private fun Context.isDownloadAllowed() =
+            (System.currentTimeMillis() - lastDownloadTime) > minDownloadInterval
+
         /** Schedule a photos-download background job */
         fun Context.enqueueLoad(initial: Boolean) {
             if (BuildConfig.DEBUG) Log.d(TAG, "enqueueLoad initial=$initial")
             logEvent("enqueue_photo_dl", "initial" to "$initial")
+            FirebaseCrashlytics.getInstance().setCustomKey("last_download_ts", lastDownloadTime)
+
+            if (!isDownloadAllowed()) {
+                if (BuildConfig.DEBUG) Log.d(TAG, "skip download request within minimal interval")
+                return
+            }
 
             val workManager = WorkManager.getInstance(this)
             workManager.enqueue(
@@ -76,6 +86,11 @@ class PhotosWorker(
         val isInitial = inputData.getBoolean("initial", false)
         val pageToken = if (isInitial) null else loadPageToken(albumId)
 
+        if (!applicationContext.isDownloadAllowed()) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "skip download work within minimal interval")
+            return Result.failure()
+        }
+
         logEvent(
             "get_photos",
             "album" to albumId,
@@ -83,6 +98,7 @@ class PhotosWorker(
             "pageToken" to (pageToken ?: "")
         )
 
+        applicationContext.lastDownloadTime = System.currentTimeMillis()
         val pagination = try {
             if (BuildConfig.DEBUG) Log.d(
                 TAG,
@@ -101,15 +117,16 @@ class PhotosWorker(
             return Result.failure()
         }
 
-        if (pagination.mediaItems.isEmpty()) {
+        if (pagination.mediaItems.isNotEmpty()) {
+            // download photos
+            val providerClient = ProviderContract.getProviderClient(
+                applicationContext, BuildConfig.PHOTOS_AUTHORITY
+            )
+            pagination.mediaItems.forEach { item -> addArtwork(providerClient, item) }
+        } else {
             Log.w(TAG, "No photos returned from API.")
-            return Result.failure()
         }
 
-        val providerClient = ProviderContract.getProviderClient(
-            applicationContext, BuildConfig.PHOTOS_AUTHORITY
-        )
-        pagination.mediaItems.forEach { item -> addArtwork(providerClient, item) }
         return Result.success()
     }
 
