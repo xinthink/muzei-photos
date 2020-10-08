@@ -134,6 +134,11 @@ class PhotosWorker(
         if (BuildConfig.DEBUG) Log.d(TAG, "adding MediaItem: $mediaItem")
 
         try {
+            if (providerClient.isMediaDownloaded(mediaItem)) {
+                if (BuildConfig.DEBUG) Log.d(TAG, "skip downloaded MediaItem: $mediaItem")
+                return
+            }
+
             val (w, h) = mediaItem.downloadSize // determines the desired dimensions
             val spec = if (w > 0) "w$w-h$h" else "d" // specifies desired dimensions or download directly
             logEvent(
@@ -155,7 +160,7 @@ class PhotosWorker(
                 val uri = providerClient.addArtwork(mediaItem.toArtwork())
                 if (uri != null) {
                     val os = applicationContext.contentResolver.openOutputStream(uri)
-                    downloadMedia(resp, os)
+                    resp.downloadMedia(os)
                 }
             }
         } catch (e: Throwable) {
@@ -164,9 +169,22 @@ class PhotosWorker(
         }
     }
 
-    private fun downloadMedia(resp: Response, os: OutputStream?) {
+    private fun ProviderClient.isMediaDownloaded(mediaItem: MediaItem): Boolean {
+        val artwork = applicationContext.contentResolver.query(
+            contentUri,
+            null,
+            "${ProviderContract.Artwork.TOKEN} = ?",
+            arrayOf(mediaItem.id),
+            null
+        ).use {
+            if (it?.moveToFirst() == true) Artwork.fromCursor(it) else null
+        }
+        return artwork?.data?.exists() ?: false
+    }
+
+    private fun Response.downloadMedia(os: OutputStream?) {
         if (os == null) return
-        val ins = resp.body()?.byteStream() ?: return
+        val ins = body()?.byteStream() ?: return
 
         os.use {
             val bytes = ByteArray(512)

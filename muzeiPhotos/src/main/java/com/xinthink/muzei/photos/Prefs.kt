@@ -85,6 +85,7 @@ fun Context.saveSelectedAlbum(album: Album): Album {
     pageTokenPrefs.edit {
         putString("photos_page_token_${album.id}", null)
     }
+    lastDownloadTime = 0L // also reset the timestamp to allow new downloads
     return album
 }
 
