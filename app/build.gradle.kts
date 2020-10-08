@@ -10,8 +10,8 @@ android {
         applicationId = "com.xinthink.muzei.photos"
         minSdkVersion(V.minSdkVersion)
         targetSdkVersion(V.targetSdkVersion)
-        versionCode = 8
-        versionName = "1.6.0"
+        versionCode = 9
+        versionName = "1.6.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
