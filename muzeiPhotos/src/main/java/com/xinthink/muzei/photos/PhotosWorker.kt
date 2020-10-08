@@ -35,8 +35,8 @@ class PhotosWorker(
         private var mDownloaderHttpClient: OkHttpClient? = null
 
         /** Checks API access interval to avoid 429 errors */
-        private fun Context.isDownloadAllowed() =
-            (System.currentTimeMillis() - lastDownloadTime) > minDownloadInterval
+        private fun Context.isDownloadAllowed(isInitial: Boolean) =
+            isInitial || (System.currentTimeMillis() - lastDownloadTime) > minDownloadInterval
 
         /** Schedule a photos-download background job */
         fun Context.enqueueLoad(initial: Boolean) {
@@ -44,7 +44,7 @@ class PhotosWorker(
             logEvent("enqueue_photo_dl", "initial" to "$initial")
             FirebaseCrashlytics.getInstance().setCustomKey("last_download_ts", lastDownloadTime)
 
-            if (!isDownloadAllowed()) {
+            if (!isDownloadAllowed(initial)) {
                 if (BuildConfig.DEBUG) Log.d(TAG, "skip download request within minimal interval")
                 return
             }
@@ -86,7 +86,7 @@ class PhotosWorker(
         val isInitial = inputData.getBoolean("initial", false)
         val pageToken = if (isInitial) null else loadPageToken(albumId)
 
-        if (!applicationContext.isDownloadAllowed()) {
+        if (!applicationContext.isDownloadAllowed(isInitial)) {
             if (BuildConfig.DEBUG) Log.d(TAG, "skip download work within minimal interval")
             return Result.failure()
         }
